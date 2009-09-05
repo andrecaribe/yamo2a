@@ -1,81 +1,84 @@
+
+
 Importer.loadQtBinding( "qt.core" );
-Importer.include("window.js");
-Importer.include("debug_window.js");
+Importer.loadQtBinding( "qt.gui" );
+Importer.loadQtBinding( "qt.uitools" );
+Importer.include("MainWindow.js");
+Importer.include("DebugWindow.js");
+Importer.include("GerenciamentoTagsWindow.js");
+Importer.include("Utils.js");
+Importer.include("Queries.js");
+Importer.include("CanvasItem.js");
 
 
 
-//classe main yamo
 
-function yamo(){
+var _mainWindow = null;
+var _debugWindow = null;
 
+
+//msg e visivel para todo mundo inclusive nos outros arquivos
+function msg(msg){
     
+    if(!_debugWindow) return;
     
-    this.createYAMOWindow = function(){
-
-	this.yamoWindow = new yamoWindow();
-	this.yamoWindow.show();
-
-    }
-    
-    this.createDebugWindow = function(){
-
-	this.debugWindow = new debugWindow();
-	this.debugWindow.show();
-
-
-    }
-    
-    this.sendMsg = function(str){
-	
-	this.debugWindow.printMsg(str);
-    
-    }
-    
-
-    
-}
-var yamo = new yamo();
-
-
-
-//metodo que imprime mensagem na janela de debug
-
-function msg(str){
-
-    yamo.sendMsg(str);
-
-}
-
-
-//ao feixar a janela principal feixe a janela de debug...
-function exit(){
-
-    yamo.debugWindow.close();
-    
+    _debugWindow.printMsg(msg);
 
 }
 
 
 
+function init() {
 
-
-function showWindowCallback() {
     
+   _mainWindow = new MainWindow();
+
+   _debugWindow = new DebugWindow();
   
-   yamo.createYAMOWindow();  
+  
+}
+
+
+
+function exit(){
+    
+    
+    _mainWindow.close();
+    _debugWindow.close(); 
+     Amarok.end();
     
    
-   yamo.createDebugWindow();
-  
+
 }
 
+
+
 /// Add item on tools menu in Amarok.
+
 if (Amarok.Window.addToolsMenu("yamo", "YAMO", "emblem-favorite-amarok")){
     var yamo_button = Amarok.Window.ToolsMenu.yamo;
-    yamo_button['triggered()'].connect(showWindowCallback);
+    yamo_button['triggered()'].connect(init);
 } else {
     Amarok.debug("YAMO Plugin menu already exists!");
 }
+
+
+if (Amarok.Window.addToolsMenu("setYamoDb", "Set YAMO Database", "emblem-favorite-amarok")){
+    var yamo_button2 = Amarok.Window.ToolsMenu.setYamoDb;
+    yamo_button2['triggered()'].connect(setYamoDB);
+} else {
+    Amarok.debug("setYamoDb button already exists!");
+}
+
+if (Amarok.Window.addToolsMenu("deleteYamoDb", "Delete YAMO Database", "emblem-favorite-amarok")){
+    var yamo_button3 = Amarok.Window.ToolsMenu.deleteYamoDb;
+    yamo_button3['triggered()'].connect(deleteYamoDb);
+} else {
+    Amarok.debug("deleteYamoDb button already exists!");
+}
+
+
+
 
 
 
