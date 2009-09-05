@@ -1,0 +1,305 @@
+scrollAreaData.addRect(210, recty, 380, 96, background_pen, background_brush) # adiciona retangulo ao canvas
+
+
+scrollAreaData.sceneRect = new QRectF(0,0,800, totalSizeY); # aumenta area canvas
+
+===============================================================================
+
+var background_color = QApplication.palette().color(QPalette.Mid);
+var background_color2 = QApplication.palette().color(QPalette.Button);
+var background_colorw = QApplication.palette().color(QPalette.Dark);
+var background_gradient = new QLinearGradient( new QPointF(0, 0), new QPointF(512, 0));
+background_gradient.setColorAt(0, background_color);
+background_gradient.setColorAt(1, background_color2);
+var background_gradient2 = new QLinearGradient( new QPointF(0, 0), new QPointF(512, 0));
+background_gradient2.setColorAt(0, background_color2);
+background_gradient2.setColorAt(1, background_color);
+var background_brush = new QBrush(background_gradient);
+var background_brush2 = new QBrush(background_gradient2);
+var background_pen   = new QPen(background_color);
+
+
+var query = "SELECT a.name, a.id, b.name,b.id, c.path  FROM artists a JOIN albums b ON (a.id = b.artist) LEFT JOIN images c ON ( b.image = c.id )";
+
+# todos albums com id do album, nome do album, id do artista, nome do artista e imagem do album
+============================================
+
+
+===codigo antigo mainwindow===================================================================================================
+
+
+/*QMainWindow.call(this, null); //herda de QMainWindow
+    
+    
+    
+    this.windowTitle = "YAMO";
+    
+    this.minimumWidth = 1024;
+    this.minimumHeight = 768;
+    this.maximumWidth = 1024;
+    this.maximumHeight = 768;
+    
+    
+    this.canvasFilled = false;
+    
+
+
+    this.comboBoxWidth = new QComboBox(this);
+    with(this.comboBoxWidth) {
+	    resize(120, 30);
+	    move(10, 10);
+	    addItem("Album", 0);
+	    addItem("Artist", 1);
+	    addItem("Name", 2);
+    }
+
+    this.comboBoxHeight = new QComboBox(this);
+    with(this.comboBoxHeight) {
+	    resize(120, 30);
+	    move(150, 10);
+	    addItem("Album", 0);
+	    addItem("Artist", 1);
+	    addItem("Name", 2);
+    }
+    
+    this.okBtn = new QPushButton("Ok", this);
+    with(this.okBtn) {
+	    resize(60, 30);
+	    move(290, 10);
+    }
+    
+
+    
+    this.queryBtn1 = new QPushButton("GO!", this);
+    with(this.queryBtn1){
+	resize(140,40);
+	move(380,10);
+    }
+    
+  
+   this.closeBtn = new QPushButton("Close",this);
+    
+   with(this.closeBtn){
+	
+	resize(120,30);
+	move(900,720);
+    
+    }
+	
+	
+	this.criaTagBtn = new QPushButton("Cria TAG",this);
+	with(this.criaTagBtn){
+		resize(120,40);
+		move(540,10);
+	}
+	
+    
+ 
+    
+    this.canvas     = new QGraphicsScene(0, 0, 1000, 500, this);
+    this.canvasView  = new QGraphicsView(this.canvas, this);
+    
+    var background_gradient = new QLinearGradient( new QPointF(0, 0), new QPointF(1000, 500));
+    background_gradient.setColorAt(0, new QColor(61,61,61,255));
+    background_gradient.setColorAt(1,  new QColor(79,79,79,255));
+    this.canvas.backgroundBrush = new QBrush(background_gradient);
+    
+
+    with(this.canvasView){
+	move(0,80);
+	resize(1024,600);
+    }
+
+
+    
+    this.labelCanvas = new QLabel("CANVAS",this);
+    with(this.labelCanvas){
+	
+	move(10,56);
+	
+    }
+	
+	
+    this.onCloseBtnClick = function(){ 
+	
+	exit();
+	
+    } 
+    
+    this.clearCanvas = function(){
+    
+
+	this.canvas.clear();
+	
+    
+    }
+	
+    this.onOKBtnClick = function(){
+
+	
+	msg((this.canvas.items().length).toString());
+
+    }
+    
+    
+    this.onQueryBtnClick = function(){
+	    
+	   
+	   
+	    
+	   if(this.canvasFilled){
+	    
+		this.clearCanvas();
+		msg("Removeu tudo, Qtde Canvas: " + this.canvas.items().length);
+		this.canvasFilled = false;
+	   }	
+	    
+	    
+	    
+	    var query = "SELECT track.id,url.rpath, track.title, artist.name, album.id, album.name, genre.name, year.name";
+	    query += "    FROM tracks track JOIN albums album ON ( track.album = album.id )";
+		query += "    JOIN urls url ON (track.url = url.id)";
+	    query += "    JOIN artists artist ON ( album.artist = artist.id )";
+	    query += "    JOIN genres genre ON ( track.genre = genre.id )";
+	    query += "    JOIN years year ON ( track.year = year.id )";
+	    
+	    
+	    
+	    msg("excutando query...");
+	    var resultadoTracks = sql( query );
+	    
+		
+		
+	    if(resultadoTracks.length != 0){
+	
+	    
+		    msg("ok...");
+
+		    
+		    msg("preenchendo canvas metodo: random");
+
+		
+		    for(var i = 0; i < resultadoTracks.length; i++){
+			
+			
+			if(i == 0 || i%8 == 0){ //temos um novo item(no caso album) quando i for 0 
+						//no inicio ou sempre que i for multiplo de [qtde colunas] ja que existem cinco colunas nesse exemplo 
+			    
+			    //monta a visualizacao desenhando retangulos para cada album com sua respectiva capa de album
+			
+			
+				imagePath = Amarok.Info.scriptPath() + "/bola.png";
+			
+			    
+			    
+				var canvasItem = new yamoCanvasItem((new QPixmap(imagePath)).scaled(ballsize,ballsize));
+				canvasItem.setID(resultadoTracks[i]);
+				
+				canvasItem.setURL(resultadoTracks[i+1]);
+				canvasItem.setPos((Math.random() * (canvasMaxSize - ballsize*2) )+ballsize,(Math.random() *(canvasMaxSize - ballsize*2))+ballsize);
+				
+				this.canvas.addItem(canvasItem);
+				
+				msg("ID: "+ canvasItem.getID()+" PosX: "+(canvasItem.x()).toString() + " PosY: "+ (canvasItem.y()).toString());
+				
+				
+				//se algum item cair em alguma coordenada fora do tamanho atual do canvas aumente o canvas...
+				if(canvasItem.x() > this.canvas.width()){
+				    
+				    this.canvas.sceneRect = new QRectF(0,0,canvasItem.x() + ballsize*2, this.canvas.height());
+				    msg("aumentou width, novo tamanho: " +this.canvas.width() +":"+this.canvas.height());
+				
+				}
+				
+				if(canvasItem.y() > this.canvas.height()){
+				    
+				    this.canvas.sceneRect = new QRectF(0,0,this.canvas.width() , canvasItem.y() + ballsize*2);
+				    msg("aumentou height, novo tamanho: " +this.canvas.width() +":"+this.canvas.height());
+				}
+				
+		
+				//canvasItems.push(canvasItem);
+
+			}
+		    
+		    }
+		    
+		    msg("canvas preenchido, qtde: " + this.canvas.items().length );
+		    
+		    this.canvasFilled = true;
+	    
+	    
+	}
+	else{
+		Amarok.alert("Query nao retornou resultados!");
+	}
+
+    
+   
+    }
+	
+	this.onCriaTagBtnClick = function(){
+		
+	
+		var _criaTagWindow = new CriaTagWindow();
+		
+	}
+	
+	
+	
+
+    this.closeBtn.released.connect(this,this.onCloseBtnClick);
+    this.queryBtn1.released.connect(this,this.onQueryBtnClick);
+    this.okBtn.released.connect(this,this.onOKBtnClick);
+	this.criaTagBtn.released.connect(this,this.onCriaTagBtnClick);*/
+	
+	
+	
+	============================================================================
+	
+	
+	
+	
+	=====codigo antigo debug window========
+	
+	
+	/*
+
+    QDialog.call(this, null);
+    this.windowTitle = "Debug Window";
+    
+    this.minimumWidth = 400;
+    this.minimumHeight = 500;
+    this.maximumWidth = 400;
+    this.maximumHeight = 500;
+    
+    
+    
+    
+    this.caixaTexto = new QListWidget(this); 
+    
+    this.button = new QPushButton("Close",this);
+    
+    with(this.button){
+	    
+	 move(300,460);
+	 resize(95,40);
+	 
+	 
+    }
+    
+    this.button['released()'].connect(this,this.close);
+    
+    with(this.caixaTexto){
+	
+	resize(390,450);
+	move(5,10);    
+    }
+    
+    this.printMsg = function(msg){
+
+	this.caixaTexto.addItem(msg);
+
+    }
+    
+ */
