@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>YAMO::Yet Another Music Organizer</string>
+  </property>
+  <property name="toolTip">
+   <string/>
+  </property>
+  <property name="styleSheet">
+   <string/>
+  </property>
+  <widget class="QGraphicsView" name="canvasView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>1001</width>
+     <height>651</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1001</width>
+     <height>631</height>
+    </size>
+   </property>
+   <property name="cursor" stdset="0">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(110, 110, 110);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>4</number>
+   </property>
+   <property name="midLineWidth">
+    <number>4</number>
+   </property>
+   <property name="sceneRect">
+    <rectf>
+     <x>0.000000000000000</x>
+     <y>0.000000000000000</y>
+     <width>900.000000000000000</width>
+     <height>630.000000000000000</height>
+    </rectf>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnGo">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>20</y>
+     <width>97</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Click to visualize collection</string>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string/>
+   </property>
+   <property name="text">
+    <string>GO!</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnGerenciarTags">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>20</y>
+     <width>97</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Click to create a new TAG</string>
+   </property>
+   <property name="text">
+    <string>Gerenciar Tags</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnExit">
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>20</y>
+     <width>97</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Exit YAMO</string>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
