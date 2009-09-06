@@ -159,7 +159,7 @@
       <x>150</x>
       <y>30</y>
       <width>191</width>
-      <height>20</height>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
@@ -199,7 +199,7 @@
      <rect>
       <x>20</x>
       <y>60</y>
-      <width>121</width>
+      <width>111</width>
       <height>16</height>
      </rect>
     </property>
@@ -213,7 +213,7 @@
       <x>130</x>
       <y>60</y>
       <width>211</width>
-      <height>20</height>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
