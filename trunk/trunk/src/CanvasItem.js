@@ -96,7 +96,7 @@ function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no can
     	
 		if(!this.infoRect){
 			
-			this.infoRect = new InfoRect(parseInt(this.X+W*2),parseInt(this.Y-W*2),400,120,this);
+			this.infoRect = new InfoRect(parseInt(this.X+W),parseInt(this.Y-W),350,120,this);
 		}
 		
 		this.infoRect.draw();

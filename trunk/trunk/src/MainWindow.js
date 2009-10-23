@@ -21,10 +21,9 @@ function MainWindow()
 		
 		var fontBrush = new QBrush(new QColor(200, 200, 200, 200));
 		
-		var font = new QFont("tahoma", 22, QFont.Bold);
+		var font = new QFont("Verdana", 22, QFont.Bold);
 		
-		var font2 = new QFont("tahoma", 10, QFont.Bold);
-		
+		var font2 = new QFont("Verdana", 10, QFont.Bold);
 		
 		var btnApply = dialog.centralWidget.tabs.children()[0].tabFilters.btnApply;
 	
@@ -42,10 +41,6 @@ function MainWindow()
 		
 		listYamoFiltersScroll.setWidget(listYamoFilters);
 		
-		
-		
-		
-		
 		var cmbGenre = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbGenre;
 		
 		var cmbArtist = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbArtist;
@@ -53,6 +48,8 @@ function MainWindow()
 		var cmbAlbum = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbAlbum;
 		
 		var cmbYear = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbYear;
+		
+		var cmbZoom = dialog.centralWidget.cmbZoom;
 		
 		var btnTags = dialog.centralWidget.btnTags;
 		
@@ -62,15 +59,27 @@ function MainWindow()
 		
 		var canvasView = dialog.centralWidget.canvasView;
 		
+		var canvasScale = 1;
+		
+		
 		canvasView.setRenderHint(QPainter.Antialiasing);
 		
-		var chkClearCache = dialog.centralWidget.tabs.children()[0].tabOptions.chkClearCache;
+		function _yamoCanvas(scenerect){
+			
+			_yamoCanvas.superclass.call(this,scenerect);
+			
+		}
+		extend(_yamoCanvas,QGraphicsScene);
+
+
+		var yamoCanvas = new _yamoCanvas(canvasView.sceneRect);
 		
-		canvasView.setScene(new QGraphicsScene(canvasView.sceneRect, this));
-		
-		var canvas = canvasView.scene();
+				
+		canvasView.setScene(yamoCanvas);
 		
 		var collectionArray = new Array();
+		
+		var chkClearCache = dialog.centralWidget.tabs.children()[0].tabOptions.chkClearCache;
 		
 		var tracks1a20 = new Array();
 		var tracks21a40 = new Array();
@@ -99,9 +108,65 @@ function MainWindow()
 		
 		//====ACTIONS==================================================================
 		
+		
+		yamoCanvas.wheelEvent = function(wheel){
+			
+			if(wheel.delta() > 0){
+				canvasView.scale(1.1,1.1);
+			}
+		    else{
+				
+				canvasView.scale(0.9,0.9);
+			}
+		}
+		
+		//_____________________________________________________________________________
+		
+		
+		yamoCanvas.mousePressEvent = function(button){
+			
+			canvasView.dragMode = QGraphicsView.ScrollHandDrag;
+			
+		}
+		
+		
+		//_____________________________________________________________________________
+		
+		yamoCanvas.mouseReleaseEvent = function(button){
+			
+			canvasView.dragMode = QGraphicsView.NoDrag;
+			
+		}
+		
+		
+		//_____________________________________________________________________________
+		
+		
+		cmbZoom['currentIndexChanged(int)'].connect(function(item){
+			
+			
+			canvasView.resetMatrix();
+			
+			if(item == 1){
+				
+				canvasView.scale(0.5,0.5);
+			}
+			else if(item == 2){
+				
+				canvasView.scale(2.0,2.0);
+			}
+			
+			
+			
+		});
+		
+		
+		
+		
+		//_____________________________________________________________________________
 		btnExit.clicked.connect(function(){
 		
-			canvas.clear();
+			yamoCanvas.clear();
 			
 			if (gerenciamentoTagsWindow) {
 				
@@ -119,6 +184,8 @@ function MainWindow()
 			
 		});
 		
+		//_____________________________________________________________________________
+		
 		
 		btnTags.clicked.connect(function(){
 		
@@ -128,10 +195,12 @@ function MainWindow()
 			
 		});
 		
+		//_____________________________________________________________________________
+		
 		btnApply.clicked.connect(function(){
 		
 		
-		for(i = 0; i < tagItems.length; i++){
+		/*for(i = 0; i < tagItems.length; i++){
 			
 			if(tagItems[i].widget.chkBox.checked == true){
 				
@@ -139,11 +208,13 @@ function MainWindow()
 				
 				msg(tagItems[i].tagName+" value: "+tagItems[i].value);
 			}
-		}
+		}*/
 		
-			/*if (canvasFilled) {
+			if (canvasFilled) {
+				
+				msg("limpando canvas");
 			
-				canvas.clear();
+				yamoCanvas.clear();
 				
 				canvasFilled = false;
 			}
@@ -154,41 +225,46 @@ function MainWindow()
 			
 			if (tracksData) {
 				tracksData.clear();
+				msg("limpando tracks data");
 			}
 			
 			
 			
 			if (collectionArray.length > 0) {
+				msg("limpando collection array");
 				collectionArray.clear();
 			}
 			
 			
 			if (tracks1a20.length > 0) {
+				
+				msg("limpando 1a20");
 			
 				tracks1a20.clear();
 				
 			}
 			
 			if (tracks21a40.length > 0) {
-			
+				
+			msg("limpando 21a4");
 				tracks21a40.clear();
 				
 			}
 			
 			if (tracks41a60.length > 0) {
-			
+				msg("limpando 41a60");
 				tracks41a60.clear();
 				
 			}
 			
 			if (tracks61a80.length > 0) {
-			
+				msg("limpando 61a80");
 				tracks61a80.clear();
 				
 			}
 			
 			if (tracks81a100.length > 0) {
-			
+				msg("limpando 81a100");
 				tracks81a100.clear();
 				
 			}
@@ -197,8 +273,11 @@ function MainWindow()
 			
 			var tracksInfo = getAllTracksInfoFromCollection();
 			
-			if (tracksInfo.length > 0) {
 			
+			msg("pegando tracks info");
+			if (tracksInfo.length > 0) {
+				
+				msg("achou");
 				tracksData = createArrayOfTracks(tracksInfo, numberOfColumns);
 			}
 			
@@ -206,12 +285,12 @@ function MainWindow()
 			
 			if (tracksData) {
 			
-				
+				msg("Tracks data nao esta vazio");
 				for (var i = 0; i < tracksData.length; i++) {
 				
 				
 				///////////////
-					var valorTrack = getValueFromTrackAndThisTag(tracksData[i].getID(), cboTag.currentText);
+					var valorTrack = getValueFromTrackAndThisTag(tracksData[i].getID(), "Rock");
 					////////////////////////
 					if (valorTrack >= 1 && valorTrack <= 20) {
 					
@@ -286,6 +365,7 @@ function MainWindow()
 				
 				
 				buildVisualization(450, 300, 80, collectionArray);
+				msg("chamou build visualization");
 				canvasFilled = true;
 				
 				
@@ -296,7 +376,7 @@ function MainWindow()
 			
 			
 			
-			*/
+			
 			
 		});
 		
@@ -335,53 +415,89 @@ function MainWindow()
 		
 		function showTagFilters(){
 			
-			var currentTags = getTags();
-	
-	
-			for(i = 0; i < currentTags.length; i++){
 			
-				var tagItem = new ItemSelectFilter();
+			
+			/*for(i = 0; i < tagItems.length; i++){
 				
-				tagItem.setLabel(currentTags[i].tagName);
-				tagItem.setColor(currentTags[i].color);
-				
-				tagItem.widget.toolTip = currentTags[i].tagName;
-				
-				tagItems.push(tagItem);
+				var item = listYamoFiltersLayout.itemAt(i);
 				
 				
+				listYamoFiltersLayout.removeWidget(tagItems[i].widget);
 				
-				listYamoFiltersLayout.addWidget(tagItem.widget,0,Qt.AlignTop);
-				
-				//
 				
 			}
 			
-			listYamoFilters.setFixedHeight(currentTags.length*tagItem.widget.height);
-			//listYamoFilters.setFixedWidth(tagItem.widget.width);
+			*/
+			/*
+			if (tagItems.length > 0) {
 			
+				var it = listYamoFiltersLayout.iterator();
+				while (it.current()) {
+				
+					listYamoFiltersLayout.removeItem(it.current());
+					
+					++it;
+				}
+				
+				
+				tagItems.clear();
+			}
+            */
+			var currentTags = getTags();
+	
+			if (currentTags.length > 0) {
+				
+				for (i = 0; i < currentTags.length; i++) {
+				
+					var tagItem = new ItemSelectFilter();
+					
+					tagItem.setLabel(currentTags[i].tagName);
+					tagItem.setColor(currentTags[i].color);
+					
+					tagItem.widget.toolTip = currentTags[i].tagName;
+					
+					tagItems.push(tagItem);
+					
+					
+					
+					listYamoFiltersLayout.addWidget(tagItem.widget, 0, Qt.AlignTop);
+					
+				//
+				
+				}
+				
+				listYamoFilters.setFixedHeight(currentTags.length * (tagItem.widget.height*1.3));
+			//listYamoFilters.setFixedWidth(tagItem.widget.width);
+				listYamoFiltersLayout.update();
+			}
 			
 		}
 		
 		
 		function buildVisualization(x, y, raioinicial, collectionArray){
 		
-		
-			if (collectionArray.length == 0) 
-				return;
+			msg("entrou em build visualization");
 			
+			if (collectionArray.length == 0) {
+				
+				msg("collection array e zero");
+				return;
+			}
+			
+			msg("1");
 			
 			var raio = raioinicial;
 			
 			var contCores = 1;
 			
 			//////////////
-			var currentColor = new QColor(cboTag.itemData(cboTag.currentIndex));
+			var currentColor = new QColor(180,180,180); 
 			////////////////
-			
+			msg("2");
 			
 			for (var i = 4; i >= 0; i--) {
-			
+				
+				msg("3");			
 				var guideCircle = new QGraphicsEllipseItem(x - (raio + 18.5), y - (raio + 18.5), (raio + 18.5) * 2, (raio + 18.5) * 2);
 				
 				
@@ -389,7 +505,7 @@ function MainWindow()
 				if (i == 4) {
 				
 				//////////////
-					var textoTag = new QGraphicsSimpleTextItem(cboTag.currentText);
+					var textoTag = new QGraphicsSimpleTextItem("Rock");
 					//////////////////
 					textoTag.setBrush(fontBrush);
 					
@@ -399,20 +515,20 @@ function MainWindow()
 					
 					textoTag.setPos(x - 35, y - 20);
 					
-					canvas.addItem(textoTag);
-					
+					yamoCanvas.addItem(textoTag);
+					msg("4");
 				}
 				
-				
+				msg("5");
 				guideCircle.setZValue(i);
-				
+				msg("6");
 				
 				var newColor = new QColor(Math.max(currentColor.red() - contCores * 10, 0), Math.max(currentColor.green() - contCores * 10, 0), Math.max(currentColor.blue() - contCores * 10, 0), 200);
 				
 				
 				currentColor = newColor;
 				
-				
+				msg("7");
 				
 				linePen.setColor(currentColor);
 				
@@ -420,9 +536,10 @@ function MainWindow()
 				
 				guideCircle.setPen(linePen);
 				
-				canvas.addItem(guideCircle);
-				
+				yamoCanvas.addItem(guideCircle);
+				msg("8");
 				var ultimoRaio = drawCircles(x, y, raio, currentColor, collectionArray[i])
+				msg("passou de draw circles");
 				raio = raio + 2.5 * ultimoRaio;
 				
 				
@@ -438,12 +555,14 @@ function MainWindow()
 		
 		function drawCircles(x, y, _rprincipal, color, tracks){
 		
+			msg("a");
+			
 			if (tracks.length == 0) {
 			
 				return 17;
 				
 			}
-			
+			msg("b");
 			
 			var contador = 0;
 			
@@ -462,7 +581,7 @@ function MainWindow()
 			
 			var ultrapassouLimite = false;
 			
-			
+			msg("c");
 			
 			var raiomenor;
 			
@@ -484,6 +603,7 @@ function MainWindow()
 				raiomenor = 17.0;
 			}
 			
+			msg("d");
 			
 			var x2;
 			var y2;
@@ -495,6 +615,7 @@ function MainWindow()
 			
 			var angleadd = (2 * Math.asin(raiomenor / (rprincipal + raiomenor)));
 			
+			msg("e");
 			
 			
 			if (!ultrapassouLimite) {
@@ -505,29 +626,30 @@ function MainWindow()
 				var maxangle = (angleadd * tracks.length);
 			}
 			
-			
+			msg("f");
 			
 			for (angle = 0; angle < maxangle && contador < tracks.length; angle += angleadd) {
 			
-			
+				msg("g");
 				x2 = (rprincipal * Math.cos(angle)) + x;
 				y2 = (rprincipal * Math.sin(angle)) + y;
 				
 				
-				var canvasItem = new CanvasItem(x2 - raiomenor, y2 - raiomenor, raiomenor * 2, raiomenor * 2, color, tracks[contador], canvas);
+				var canvasItem = new CanvasItem(x2 - raiomenor, y2 - raiomenor, raiomenor * 2, raiomenor * 2, color, tracks[contador], yamoCanvas);
 				
 				canvasItem.setZValue(6);
-				canvas.addItem(canvasItem);
+				yamoCanvas.addItem(canvasItem);
 				
 				contador++;
 				
 			}
-			
+			msg("h");
 			return raiomenor;
 			
 			
 			
 		}
+		
 		
 		
 		//=============================================================================

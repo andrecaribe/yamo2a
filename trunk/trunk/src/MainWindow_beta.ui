@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>872</width>
+    <width>882</width>
     <height>600</height>
    </rect>
   </property>
@@ -362,6 +362,32 @@
        </spacer>
       </item>
       <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Zoom:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cmbZoom">
+        <item>
+         <property name="text">
+          <string>100%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>50%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>200%</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnTags">
         <property name="text">
          <string>Tags</string>
@@ -384,7 +410,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>872</width>
+     <width>882</width>
      <height>23</height>
     </rect>
    </property>

@@ -178,14 +178,16 @@ function modifyTag(tagID, name, color){
 
 
 function deleteTag(tag){
-	
-		var query = "DELETE from yamo_tags where tag like '%"+tag+"%'";
-	
-		var res = sql(query);
 		
 		var tagid = getTagID(tag);
 		
+		var query = "DELETE from yamo_tags where id = "+tagid;
+	
+		sql(query);
+		
 		var query2 = "DELETE from yamo_tracktag where tag="+tagid;
+		
+		sql(query2);
 }
 
 

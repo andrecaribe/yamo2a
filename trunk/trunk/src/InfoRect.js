@@ -28,25 +28,25 @@ function InfoRect(x,y,w,h,parent){
 	
 	var textAlbum = track.getAlbumName();
 	
-	if(textTitle.length > 22){
+	if(textTitle.length > 9){
 		
-		textTitle = cropString(textTitle,22);
+		textTitle = cropString(textTitle,19);
 	}
 	
-	if(textArtist.length > 30){
+	if(textArtist.length > 17){
 		
-		textArtist = cropString(textArtist,23);
+		textArtist = cropString(textArtist,10);
 	}
 	
-	if(textAlbum.length > 30){
+	if(textAlbum.length > 17){
 		
-		textAlbum = cropString(textAlbum,23);
+		textAlbum = cropString(textAlbum,10);
 	}
 	
 	
 	if(x + w > canvasWidth){
 		
-		X = x - (bolaW*2.5 + w);
+		X = x - (bolaW + w);
 	}
 	else if(x < 0){
 
