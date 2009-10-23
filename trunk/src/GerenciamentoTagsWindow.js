@@ -25,7 +25,7 @@ function GerenciamentoTagsWindow(parent){
 				
 				//==Gui Style Vars=========================================================
 				
-				var font = new QFont("tahoma", 9);
+				var font = new QFont("verdana", 9);
 				font.setBold(true);
 				
 				//=====Buttons=============================================================
@@ -39,6 +39,8 @@ function GerenciamentoTagsWindow(parent){
 				var btnBackPage = dialog.panTrackBrowser.btnVoltar;
 				
 				var btnForwardPage = dialog.panTrackBrowser.btnAvancar;
+				
+				var btnDelete = dialog.panIncluirTag.btnDelete;
 				//=========================================================================
 				
 				
@@ -247,11 +249,37 @@ function GerenciamentoTagsWindow(parent){
 							showCurrentTags();
 							tagManagementMode = 0;
 					}
-					
+						////////////	
+						//	parent.updateTagFilters();
+						///////////	
 				});
 				
 				
 				
+				btnDelete.clicked.connect(function(){
+					
+						deleteTag(tagSelected);	
+						
+						showCurrentTags();
+						
+						btnDelete.setEnabled(false);
+						
+						if(trackSelected){
+							
+							if (showMode == 0){
+								
+								var trackID = getTrackID(trackSelected.title, trackSelected.album);
+								
+								self.showMusicTagRatings(trackID);
+							}
+							else if (showMode == 1){
+								
+								self.showMusicTagRatings(trackSelected[1]);
+							} 
+						}			
+					
+					
+				});
 				
 				//_________________________________________________________________________
 				
@@ -294,9 +322,7 @@ function GerenciamentoTagsWindow(parent){
 					
 					dialog.panIncluirTag.title = "Modify Tag";
 					
-					msg("tag management mode = "+tagManagementMode);
-					
-					msg("choosed new color = "+choosedNewColor);
+					txtTag.text = item.text();
 				});
 				
 				
@@ -304,7 +330,9 @@ function GerenciamentoTagsWindow(parent){
 				
 				
 				lstTags.itemClicked.connect(function(item){
-				
+					
+					
+					btnDelete.setEnabled(true);
 				
 					tagSelected = item.text();
 					
