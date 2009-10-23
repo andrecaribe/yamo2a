@@ -7,22 +7,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>872</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0" rowspan="2">
-     <widget class="QTabWidget" name="tabWidget">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabs">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>251</width>
+        <height>511</height>
+       </size>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -46,6 +52,9 @@
           <layout class="QGridLayout" name="gridLayout">
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetNoConstraint</enum>
+             </property>
              <item>
               <widget class="QLabel" name="label">
                <property name="sizePolicy">
@@ -79,6 +88,12 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -120,6 +135,12 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
+               </property>
               </widget>
              </item>
             </layout>
@@ -159,6 +180,12 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -200,6 +227,12 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
+               </property>
               </widget>
              </item>
             </layout>
@@ -221,17 +254,29 @@
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="0">
             <widget class="QScrollArea" name="listYAMOFilters">
+             <property name="lineWidth">
+              <number>0</number>
+             </property>
              <property name="widgetResizable">
               <bool>true</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
              </property>
              <widget class="QWidget" name="scrollAreaWidgetContents">
               <property name="geometry">
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>183</width>
-                <height>233</height>
+                <width>214</width>
+                <height>235</height>
                </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
              </widget>
             </widget>
@@ -275,7 +320,7 @@
        <attribute name="title">
         <string>Options</string>
        </attribute>
-       <widget class="QCheckBox" name="checkClearCache">
+       <widget class="QCheckBox" name="chkClearCache">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -287,14 +332,21 @@
         <property name="text">
          <string>Clear cache on exit.</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </widget>
      </widget>
     </item>
     <item row="0" column="1">
-     <widget class="QGraphicsView" name="graphicsView"/>
+     <widget class="QGraphicsView" name="canvasView">
+      <property name="styleSheet">
+       <string>background-color: rgb(85, 85, 85);</string>
+      </property>
+     </widget>
     </item>
-    <item row="1" column="1">
+    <item row="1" column="0" colspan="2">
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
        <spacer name="horizontalSpacer_5">
@@ -308,6 +360,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnTags">
+        <property name="text">
+         <string>Tags</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnExit">
@@ -325,10 +384,16 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>25</height>
+     <width>872</width>
+     <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+   </widget>
+   <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
