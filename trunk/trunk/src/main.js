@@ -1,20 +1,19 @@
-var local = "";
-
 Importer.loadQtBinding( "qt.core" );
 Importer.loadQtBinding( "qt.gui" );
 Importer.loadQtBinding( "qt.uitools" );
-Importer.include(local + "MainWindow.js");
-Importer.include(local + "DebugWindow.js");
-Importer.include(local + "GerenciamentoTagsWindow.js");
-Importer.include(local + "Utils.js");
-Importer.include(local + "Queries.js");
-Importer.include(local + "CanvasItem.js");
-Importer.include(local + "PlayList.js");
-Importer.include(local + "InfoRect.js");
-Importer.include(local + "Track.js");
-//Importer.include("PersistentData.js");
-Importer.include(local + "TagValueProgressBar.js");
-Importer.include(local + "DialogModifyValue.js");
+Importer.include("MainWindow.js");
+Importer.include("DebugWindow.js");
+Importer.include("GerenciamentoTagsWindow.js");
+Importer.include("Utils.js");
+Importer.include("Queries.js");
+Importer.include("CanvasItem.js");
+Importer.include("PlayList.js");
+Importer.include("InfoRect.js");
+Importer.include("Track.js");
+Importer.include("PersistentData.js");
+Importer.include("TagValueProgressBar.js");
+Importer.include("DialogModifyValue.js");
+Importer.include("ItemSelectFilter.js");
 
 
 var mainWindow = null;
@@ -57,18 +56,16 @@ function init() {
 
 function exit(flagDeletarDados){
 
-
-    mainWindow.getDialog().done(0);
-    
-	debugWindow.getDialog().done(0);
+    mainWindow.getDialog().close();
+	
+	debugWindow.getDialog().close();
 	
 	if (flagDeletarDados) {
-	
-		stMsg("deletando tracksdata");
+		
+		stMsg("deleting tracksdata");
 	
 		tracksData = null;
 	}
-	
 	
 	mainWindow.gerenciamentoTagsWindow = null;
 	
@@ -77,7 +74,6 @@ function exit(flagDeletarDados){
 	debugWindow = null;
 	
 	Amarok.end();
-
 }
 
 /// Add item on tools menu in Amarok.

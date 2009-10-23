@@ -4,7 +4,7 @@
 
 
 
-function extend(subclass, superclass) {    //metodo que implementa herança 
+function extend(subclass, superclass) {    //method that implements inheritance
 	    
 		function Dummy(){} 
 	    
@@ -38,8 +38,11 @@ function sql(query){
 }
 
 
-function addListItem(list,item,font){
-	//item.setFont(font);	
+function addListItem(list,item,font,icon){
+	
+	
+	//item.setFont(font);
+			
 	list.addItem(item);
 }
 
@@ -47,7 +50,7 @@ function addListItem(list,item,font){
 
 
 
-function loadWindow(file){ //le arquivo .UI criado no QT creator e cria uma janela usando o arquivo
+function loadWindow(file){ ////reads file UI file and creates a window
 	
 	var loader = new QUiLoader(Amarok.Window);
 	
@@ -60,6 +63,22 @@ function loadWindow(file){ //le arquivo .UI criado no QT creator e cria uma jane
     ui_file.close();
 	
 	return window;
+	
+}
+
+function loadWidget(file,parent){
+	
+	var loader = new QUiLoader();
+	
+	var ui_file = new QFile(Amarok.Info.scriptPath()+ "/"+file, loader);
+	
+	ui_file.open(QIODevice.ReadOnly);
+	
+	var widget = loader.load(ui_file,parent);
+	
+	ui_file.close();
+	
+	return widget;
 	
 }
 

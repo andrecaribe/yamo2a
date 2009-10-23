@@ -156,11 +156,26 @@ function insertTag(tag,color){
 }
 
 
-function modifyTagName(tagID, name){
+
+function modifyTag(tagID, name, color){
 	
 	
-	sql("UPDATE yamo_tags SET tag = "+name+" WHERE id ="+tagID);
+	msg("entrou em modify tag, tag id = "+tagID+",name = "+name);
+	if (color) {
+		
+		msg("nova cor");
+		sql("UPDATE yamo_tags SET tag = '"+name+"', color = '"+color+"' WHERE id = "+tagID);
+	}
+	else {
+		
+		msg("nao mudou cor");
+		sql("UPDATE yamo_tags SET tag = '"+name+"' WHERE id = "+tagID);
+		
+		msg("novo nome = "+sql("select tag from yamo_tags where id = "+tagID));
+		
+	}
 }
+
 
 function deleteTag(tag){
 	

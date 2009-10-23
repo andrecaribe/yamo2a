@@ -7,72 +7,70 @@ function MainWindow()
 
 {	
 
-	try {
 	
+		
+		
+		
+		//=============PRIVATE VARIABLES===============================================
 	
-		var dialog = loadWindow("MainWindow.ui");
+		var dialog = loadWindow("MainWindow_beta.ui");
 		
 		var self = this;
 		
 		var linePen = new QPen(new QColor(61, 61, 61, 180));
 		
-		var defaultBallColor = new QColor(1, 66, 132, 180);
-		var defaultArcColor = new QColor(1, 66, 132, 255);
-		
 		var fontBrush = new QBrush(new QColor(200, 200, 200, 200));
 		
-		var font = new QFont("Verdana", 22, QFont.Bold);
+		var font = new QFont("tahoma", 22, QFont.Bold);
 		
-		var font2 = new QFont("Verdana", 10, QFont.Bold);
-		
-		var brushArco = new QBrush(defaultArcColor);
+		var font2 = new QFont("tahoma", 10, QFont.Bold);
 		
 		
-		
-		
-		
-		var btnGo = dialog.btnGo;
-		
-		var btnMudaPagina = dialog.btnMudaPagina;
-		
-		var btnExit = dialog.btnExit;
-		
-		var cboTag = dialog.stackOpcoes.opVisual.cboTag;
+		var btnApply = dialog.centralWidget.tabs.children()[0].tabFilters.btnApply;
 	
-		var tagsExistentes = getTags();
-	
-	
-		for(i = 0; i < tagsExistentes.length; i++){
+		var btnExit = dialog.centralWidget.btnExit;
 		
-			cboTag.addItem(tagsExistentes[i].tagName,tagsExistentes[i].color);
-		}
+		var listYamoFiltersScroll = dialog.centralWidget.tabs.children()[0].tabFilters.groupYAMOFilters.listYAMOFilters;
 		
+		var listYamoFilters = new QGroupBox();
 		
-		var cboGenero = dialog.stackOpcoes.opVisual.cboGenero;
+		var listYamoFiltersLayout = new QVBoxLayout();
 		
-		var cboArtista = dialog.stackOpcoes.opVisual.cboArtista;
+		listYamoFilters.setLayout(listYamoFiltersLayout);
 		
-		var cboAlbum = dialog.stackOpcoes.opVisual.cboAlbum;
+		listYamoFilters.flat = true;
 		
+		listYamoFiltersScroll.setWidget(listYamoFilters);
 		
 		
-		var btnGerenciarTags = dialog.btnGerenciarTags;
+		
+		
+		
+		var cmbGenre = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbGenre;
+		
+		var cmbArtist = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbArtist;
+		
+		var cmbAlbum = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbAlbum;
+		
+		var cmbYear = dialog.centralWidget.tabs.children()[0].tabFilters.groupID3Filters.cmbYear;
+		
+		var btnTags = dialog.centralWidget.btnTags;
 		
 		var gerenciamentoTagsWindow = null;
 		
 		var canvasFilled = false;
 		
-		var canvasView = dialog.canvasView;
+		var canvasView = dialog.centralWidget.canvasView;
 		
 		canvasView.setRenderHint(QPainter.Antialiasing);
 		
-		var opDeletarDados = dialog.stackOpcoes.opGeral.chkDeletarDados;
+		var chkClearCache = dialog.centralWidget.tabs.children()[0].tabOptions.chkClearCache;
 		
 		canvasView.setScene(new QGraphicsScene(canvasView.sceneRect, this));
 		
 		var canvas = canvasView.scene();
 		
-		var arrayColecao = new Array();
+		var collectionArray = new Array();
 		
 		var tracks1a20 = new Array();
 		var tracks21a40 = new Array();
@@ -83,42 +81,46 @@ function MainWindow()
 		var tagItems = new Array();
 		
 		
-		
-		this.gerenciamentoTagsClosed = function(){
-			
-			gerenciamentoTagsWindow = null;
-		}
+		//=============================================================================
 		
 		
-		
-		btnMudaPagina.clicked.connect(function(){
-		
-		
-			var currentIndex = dialog.stackOpcoes.currentIndex;
-			
-			dialog.stackOpcoes.setCurrentIndex(1 - currentIndex);
-			
-		});
+		//=======ON INIT===============================================================
 		
 		
+		dialog.show();
+		
+		showTagFilters();
+		
+		
+		
+		//=============================================================================
+		
+		
+		
+		//====ACTIONS==================================================================
 		
 		btnExit.clicked.connect(function(){
 		
 			canvas.clear();
 			
+			if (gerenciamentoTagsWindow) {
+				
+				gerenciamentoTagsWindow.getDialog().done(0);
+			}
+			
 			var flagDeletar = false;
-			
-			if (opDeletarDados.checked) 
-			
+
+			if (chkClearCache.checked) {
+
 				flagDeletar = true;
-			
+			}
 			exit(flagDeletar);
 			
 			
 		});
 		
 		
-		btnGerenciarTags.clicked.connect(function(){
+		btnTags.clicked.connect(function(){
 		
 			if(!gerenciamentoTagsWindow)
 				gerenciamentoTagsWindow = new GerenciamentoTagsWindow(self);
@@ -126,10 +128,20 @@ function MainWindow()
 			
 		});
 		
-		btnGo.clicked.connect(function(){
+		btnApply.clicked.connect(function(){
 		
 		
-			if (canvasFilled) {
+		for(i = 0; i < tagItems.length; i++){
+			
+			if(tagItems[i].widget.chkBox.checked == true){
+				
+				tagItems[i].setValue(tagItems[i].widget.sldValue.value);
+				
+				msg(tagItems[i].tagName+" value: "+tagItems[i].value);
+			}
+		}
+		
+			/*if (canvasFilled) {
 			
 				canvas.clear();
 				
@@ -146,8 +158,8 @@ function MainWindow()
 			
 			
 			
-			if (arrayColecao.length > 0) {
-				arrayColecao.clear();
+			if (collectionArray.length > 0) {
+				collectionArray.clear();
 			}
 			
 			
@@ -198,9 +210,9 @@ function MainWindow()
 				for (var i = 0; i < tracksData.length; i++) {
 				
 				
-				
+				///////////////
 					var valorTrack = getValueFromTrackAndThisTag(tracksData[i].getID(), cboTag.currentText);
-					
+					////////////////////////
 					if (valorTrack >= 1 && valorTrack <= 20) {
 					
 						tracks1a20.push(tracksData[i]);
@@ -235,15 +247,15 @@ function MainWindow()
 				
 				
 				
-				arrayColecao.push(tracks1a20);
-				arrayColecao.push(tracks21a40);
-				arrayColecao.push(tracks41a60);
-				arrayColecao.push(tracks61a80);
-				arrayColecao.push(tracks81a100);
+				collectionArray.push(tracks1a20);
+				collectionArray.push(tracks21a40);
+				collectionArray.push(tracks41a60);
+				collectionArray.push(tracks61a80);
+				collectionArray.push(tracks81a100);
 				
 				
 				
-				for (i = 0; i < arrayColecao.length; i++) {
+				for (i = 0; i < collectionArray.length; i++) {
 				
 				
 					if (i == 0) 
@@ -262,18 +274,18 @@ function MainWindow()
 										msg("faixa 81 a 100\n\n ");
 					
 					
-					msg("tamanho: " + arrayColecao[i].length);
+					msg("tamanho: " + collectionArray[i].length);
 					
 					
-					for (j = 0; j < arrayColecao[i].length; j++) {
+					for (j = 0; j < collectionArray[i].length; j++) {
 					
-						msg("faixa: " + arrayColecao[i][j].getTitle());
+						msg("faixa: " + collectionArray[i][j].getTitle());
 						
 					}
 				}
 				
 				
-				montaVisualizacao(450, 300, 80, arrayColecao);
+				buildVisualization(450, 300, 80, collectionArray);
 				canvasFilled = true;
 				
 				
@@ -284,9 +296,23 @@ function MainWindow()
 			
 			
 			
-			
+			*/
 			
 		});
+		
+		
+		
+		//=============================================================================
+		
+		
+		
+		//=====PUBLIC FUNCTIONS========================================================
+		
+		this.gerenciamentoTagsClosed = function(){
+			
+			gerenciamentoTagsWindow = null;
+		}
+		
 		
 		this.getDialog = function(){
 		
@@ -294,8 +320,51 @@ function MainWindow()
 			
 		}
 		
+		this.updateTagFilters = function(){
+			
+			showTagFilters();
+		}
 		
-		function montaVisualizacao(x, y, raioinicial, collectionArray){
+		
+		
+		//=============================================================================
+		
+		
+		//=====PRIVATE FUNCTIONS=======================================================
+		
+		
+		function showTagFilters(){
+			
+			var currentTags = getTags();
+	
+	
+			for(i = 0; i < currentTags.length; i++){
+			
+				var tagItem = new ItemSelectFilter();
+				
+				tagItem.setLabel(currentTags[i].tagName);
+				tagItem.setColor(currentTags[i].color);
+				
+				tagItem.widget.toolTip = currentTags[i].tagName;
+				
+				tagItems.push(tagItem);
+				
+				
+				
+				listYamoFiltersLayout.addWidget(tagItem.widget,0,Qt.AlignTop);
+				
+				//
+				
+			}
+			
+			listYamoFilters.setFixedHeight(currentTags.length*tagItem.widget.height);
+			//listYamoFilters.setFixedWidth(tagItem.widget.width);
+			
+			
+		}
+		
+		
+		function buildVisualization(x, y, raioinicial, collectionArray){
 		
 		
 			if (collectionArray.length == 0) 
@@ -306,9 +375,9 @@ function MainWindow()
 			
 			var contCores = 1;
 			
-			
+			//////////////
 			var currentColor = new QColor(cboTag.itemData(cboTag.currentIndex));
-			
+			////////////////
 			
 			
 			for (var i = 4; i >= 0; i--) {
@@ -319,9 +388,9 @@ function MainWindow()
 				
 				if (i == 4) {
 				
-				
+				//////////////
 					var textoTag = new QGraphicsSimpleTextItem(cboTag.currentText);
-					
+					//////////////////
 					textoTag.setBrush(fontBrush);
 					
 					textoTag.setZValue(i + 1);
@@ -338,7 +407,7 @@ function MainWindow()
 				guideCircle.setZValue(i);
 				
 				
-				var newColor = new QColor(Math.min(currentColor.red() + contCores * 10, 255), Math.min(currentColor.green() + contCores * 10, 255), Math.min(currentColor.blue() + contCores * 10, 255), 200);
+				var newColor = new QColor(Math.max(currentColor.red() - contCores * 10, 0), Math.max(currentColor.green() - contCores * 10, 0), Math.max(currentColor.blue() - contCores * 10, 0), 200);
 				
 				
 				currentColor = newColor;
@@ -460,17 +529,9 @@ function MainWindow()
 			
 		}
 		
-		dialog.show();
 		
-		
-	}
-	catch(error){
-		
-		Amarok.alert("Error on MainWindow screen!");
-		Amarok.alert(error.toString());		
-		
-		
-	}	
+		//=============================================================================
+	
 		
 }
 	

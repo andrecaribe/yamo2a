@@ -34,7 +34,7 @@
 		
 		unTagMusic(trackID,tagID);
 		
-		parent.mostraAvaliacoes(trackID);
+		parent.showMusicTagRatings(trackID);
 		
 	});
 	
@@ -51,7 +51,7 @@
 	
 	this.notifyModifiedValue = function(){
 		
-		   parent.mostraAvaliacoes(trackID);
+		   parent.showMusicTagRatings(trackID);
 		
 	}
 	

@@ -128,7 +128,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Criar nova Tag</string>
+           <string/>
           </property>
           <property name="text">
            <string>OK</string>
@@ -578,7 +578,7 @@
       <item row="0" column="0">
        <widget class="QListWidget" name="lstTagsCadastradas">
         <property name="toolTip">
-         <string>Tags já cadastradas</string>
+         <string>Click twice to modify</string>
         </property>
        </widget>
       </item>
