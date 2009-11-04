@@ -3,20 +3,39 @@
  */
 
  
- function ItemSelectFilter(){
+ function ItemSelectFilter(type){
  	
-	ItemSelectFilter.superclass.call(this);
+	//ItemSelectFilter.superclass.call(this);
+	
+	var type = type;
 	
 	this.tagName;
 	this.color;
 	
 	this.value;
 	
-	this.widget = loadWidget("ItemSelectFilter.ui",this);
+	this.id;
 	
+	this.widget;
+	
+	if (type == 1) {
+		
+		this.widget = loadWidget("ItemSelectFilter.ui", this);
+	}
+	else if(type == 2){
+		this.widget = new QCheckBox();
+		
+	}
 	this.setLabel = function(label){
 		
-		this.widget.chkBox.text = label;
+		if (type == 1) {
+		
+			this.widget.chkBox.text = label;
+		}
+		else if(type == 2){
+			
+			this.widget.text = label;
+		}
 		this.tagName = label;
 	}
 	
@@ -30,10 +49,16 @@
 		this.value = value;
 	}
 	
+	this.setID = function(id){
+		
+		
+		this.id = id;
+	}
+	
 	
 	
 	
  }
  
  
- extend(ItemSelectFilter,QWidget);
+ //extend(ItemSelectFilter,QWidget);

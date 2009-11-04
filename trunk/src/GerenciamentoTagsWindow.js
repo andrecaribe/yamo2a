@@ -175,19 +175,13 @@ function GerenciamentoTagsWindow(parent){
 				
 				//_________________________________________________________________________
 				btnCloseWindow.clicked.connect(function(){
-				
-					try {
 					
 						ratingCanvas.clear();
 						
 						parent.gerenciamentoTagsClosed();
 						
 						dialog.close();
-					} 
-					catch (e) {
 					
-						Amarok.alert(e.toString());
-					}
 					
 				});
 				
@@ -249,9 +243,9 @@ function GerenciamentoTagsWindow(parent){
 							showCurrentTags();
 							tagManagementMode = 0;
 					}
-						////////////	
-						//	parent.updateTagFilters();
-						///////////	
+							
+							parent.updateTagFilters();
+						
 				});
 				
 				
@@ -418,8 +412,9 @@ function GerenciamentoTagsWindow(parent){
 				
 					var value = sldValue.value;
 					
-					if (trackSelected) {
+					if (value > 0) {
 					
+												
 						if (showMode == 0) {
 						
 							tagMusic(getTrackID(trackSelected.title, trackSelected.album), tagSelected, value);
@@ -433,7 +428,7 @@ function GerenciamentoTagsWindow(parent){
 								
 								self.showMusicTagRatings(trackSelected[1]);
 							}
-					}
+					}else Amarok.alert("Choose at least 1% value!!");
 					
 					
 					
