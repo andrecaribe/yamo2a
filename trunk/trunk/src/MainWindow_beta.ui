@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>882</width>
-    <height>600</height>
+    <width>930</width>
+    <height>660</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,7 +84,7 @@
              <item>
               <widget class="QComboBox" name="cmbArtist">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -95,6 +95,17 @@
                  <height>24</height>
                 </size>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>All</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -130,7 +141,7 @@
              <item>
               <widget class="QComboBox" name="cmbAlbum">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -141,6 +152,17 @@
                  <height>24</height>
                 </size>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>All</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -176,7 +198,7 @@
              <item>
               <widget class="QComboBox" name="cmbGenre">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -187,6 +209,17 @@
                  <height>24</height>
                 </size>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>All</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -222,7 +255,7 @@
              <item>
               <widget class="QComboBox" name="cmbYear">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
@@ -233,6 +266,17 @@
                  <height>24</height>
                 </size>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>135</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>All</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>
@@ -240,7 +284,7 @@
           </layout>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QGroupBox" name="groupYAMOFilters">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -253,38 +297,24 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="0">
-            <widget class="QScrollArea" name="listYAMOFilters">
-             <property name="lineWidth">
-              <number>0</number>
-             </property>
-             <property name="widgetResizable">
-              <bool>true</bool>
+            <widget class="QGraphicsView" name="tagFiltersList">
+             <property name="sceneRect">
+              <rectf>
+               <x>0.000000000000000</x>
+               <y>0.000000000000000</y>
+               <width>0.000000000000000</width>
+               <height>0.000000000000000</height>
+              </rectf>
              </property>
              <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>214</width>
-                <height>235</height>
-               </rect>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <spacer name="horizontalSpacer_6">
@@ -314,6 +344,20 @@
           </item>
          </layout>
         </item>
+        <item row="1" column="0">
+         <widget class="QComboBox" name="cmbMethod">
+          <item>
+           <property name="text">
+            <string>Circle </string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Mini PCA</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tabOptions">
@@ -337,12 +381,40 @@
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="tabPlaylist">
+       <attribute name="title">
+        <string>Playlist</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
     <item row="0" column="1">
      <widget class="QGraphicsView" name="canvasView">
       <property name="styleSheet">
        <string>background-color: rgb(85, 85, 85);</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="sceneRect">
+       <rectf>
+        <x>0.000000000000000</x>
+        <y>0.000000000000000</y>
+        <width>632.000000000000000</width>
+        <height>579.000000000000000</height>
+       </rectf>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="renderHints">
+       <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+      </property>
+      <property name="resizeAnchor">
+       <enum>QGraphicsView::AnchorViewCenter</enum>
       </property>
      </widget>
     </item>
@@ -410,7 +482,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>882</width>
+     <width>930</width>
      <height>23</height>
     </rect>
    </property>

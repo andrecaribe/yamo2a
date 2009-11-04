@@ -71,6 +71,14 @@ function getTagID(tag){
 	return sql(query);
 }
 
+function getNameFromTagID(tagID){
+	
+	var res = sql("SELECT tag from yamo_tags where id = "+tagID)
+	
+	
+	return res.toString();
+}
+
 
 
 function getTagsFromTrack(trackID){
@@ -307,7 +315,28 @@ function getAllTracksFromAlbum(albumID){
 }
 
 
-function getAllTracksInfoFromCollection(){
+function getAllTracksInfoFromCollection(ID3Filters){
+	
+	
+	
+	
+	
+		
+		
+		var artist = ID3Filters.artist;
+		var album  = ID3Filters.album;
+		var genre  = ID3Filters.genre;
+		var year   = ID3Filters.year;
+		
+		var where = " WHERE 1=1";
+		
+		if(artist) where += " and artist.id ="+artist;
+		
+		if(album) where += " and album.id = "+album;
+		
+		if(genre) where += " and genre.id ="+genre;
+		
+		if(year) where += " and year.id = "+year;
 	
 	
 
@@ -323,13 +352,90 @@ function getAllTracksInfoFromCollection(){
 
 	    _query += "    LEFT JOIN years year ON ( track.year = year.id )";
 
-		_query += "    LEFT JOIN images image ON (album.image = image.id)"; 
+		_query += "    LEFT JOIN images image ON (album.image = image.id)";
+		
+		_query +=      where;
+		
+		 
 		
 		
 	var result = sql(_query);
 	
 	return result;
 }
+
+function getValuesFromTheeseTags(tagFiltersSelected,trackID){
+				
+				var query;
+				
+				
+				var tagIDs = new Array();
+				
+				for(i = 0; i < tagFiltersSelected.length; i++){
+					
+					tagIDs.push(tagFiltersSelected[i].id);
+					
+					
+				}
+				
+				msg("trackID: "+trackID);
+				
+				if(tagFiltersSelected.length > 1){
+					
+					query =  " select tag,value from yamo_tracktag where track =";
+					query +=     " (select yatr.track from yamo_tracktag yatr";
+					query +=	 " where yatr.tag in ("+tagIDs.toString()+")";
+					query +=     " and yatr.track = "+trackID;
+					query +=     " group by yatr.track";
+					query +=     " having count(*) = "+tagFiltersSelected.length+")";
+					query += "     and tag in("+tagIDs.toString()+")";
+				}
+				
+				else if(tagFiltersSelected.length == 1){
+					
+					query =  " SELECT tag,value from yamo_tracktag where tag = "+tagIDs[0];
+					query     += " AND track = "+trackID;
+					
+				}
+				
+				var result = sql(query);
+				
+				
+				
+				if(result.length > 0){
+					
+					
+					var resultArray = new Array();
+					
+					for(var i = 0; i < result.length; i++){
+						
+						if (i % 2 == 0) {
+							var resultItem = new Object();
+							resultItem.name = getNameFromTagID(result[i]);
+							resultItem.value = result[i+1];
+							resultItem.id = result[i];
+							resultArray.push(resultItem);
+						}
+					}
+					
+					
+					return resultArray;
+					
+					
+				}
+				
+				else{
+					
+					return null;
+					
+				}
+				 
+				
+				
+				
+				
+				
+			}
 
 
 	

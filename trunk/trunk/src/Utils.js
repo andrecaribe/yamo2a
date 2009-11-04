@@ -149,4 +149,86 @@ function radianToDegree(radian){
 	return radian * (180/Math.PI);
 }
 
+///////////////////////////////
+
+
+/////////////QUICK SORT/////////////
+
+var pivot = new Object();
+
+function q_sort1(array, left, right){ //sorts an array of objects (name, value)
+	
+	
+	var l_hold = left;
+	
+	var r_hold = right;
+	
+	
+	pivot.value = array[left].value;
+	pivot.name = array[left].name;
+	pivot.id = array[left].id;
+	
+	
+	while (left < right) {
+		
+		while ((array[right].value>=pivot.value) && (left<right)) {
+			right--;
+		
+		}
+		if (left != right){
+			
+			array[left].value = array[right].value;
+			
+			array[left].name = array[right].name;
+			
+			array[left].id = array[right].id;
+			
+			left++;
+		}
+		while ((array[left].value<=pivot.value) && (left<right)) {
+			left++;
+		}
+		if (left != right) {
+			
+			array[right].value = array[left].value;
+			
+			array[right].name = array[left].name;
+			
+			array[right].id = array[left].id;
+			
+			right--;
+		}
+	}
+	
+	array[left].value = pivot.value;
+	
+	array[left].name = pivot.name;
+	
+	array[left].id = pivot.id;
+	
+	pivot.value = left;
+	left = l_hold;
+	right = r_hold;
+	if (left < pivot.value) q_sort1(array, left, pivot.value-1);
+	if (right > pivot.value) q_sort1(array, pivot.value+1, right);
+}
+
+
+
+function quickSort(array,type){
+	
+	msg("entrou em quickSort");
+	
+	if (type == 1) {
+		msg("type = 1");
+		q_sort1(array, 0, array.length - 1);
+	}
+	else 
+		if (type == 2) {
+			q_sort2(array, 0, array.length - 1);
+		}
+}
+
+
+
 
