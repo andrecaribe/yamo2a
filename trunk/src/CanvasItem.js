@@ -4,9 +4,9 @@
 
 
 
-function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no canvas
+function CanvasItem(X,Y,W,H,color,track,scene,view) { 
     
-    CanvasItem.superclass.call(this, X,Y,W,H); //chama construtor da superclasse 
+    CanvasItem.superclass.call(this, X,Y,W,H); //call superclass constructor 
     
 	this.itemColor = color;
 	
@@ -36,7 +36,9 @@ function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no can
 	
 	this.H = H;
 	
-	var parent = parent;
+	var scene = scene;
+	
+	var view = view;
 	        
     this.setAcceptHoverEvents(true);
 	
@@ -85,9 +87,15 @@ function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no can
 	}
 	
 	
-	this.getParent = function(){
+	this.getScene = function(){
 		
-		return parent;
+		return scene;
+		
+	}
+	
+	this.getView = function(){
+		
+		return view;
 		
 	}
 	
@@ -96,16 +104,19 @@ function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no can
     	
 		if(!this.infoRect){
 			
-			this.infoRect = new InfoRect(parseInt(this.X+W),parseInt(this.Y-W),350,120,this);
+			this.infoRect = new InfoRect(parseInt(this.X+W),parseInt(this.Y-W),300,120,this);
 		}
 		
 		this.infoRect.draw();
 		
+			
     }
 	
 	this.mousePressEvent = function(event){
 		
 		this.clickedMe = true;
+		
+		msg("clicou na bola");
 		
 	}
 	
@@ -115,7 +126,6 @@ function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no can
 				this.infoRect.remove();
 			}
 			
-		
 	}
 	
 	
@@ -135,7 +145,5 @@ function CanvasItem(X,Y,W,H,color,track,parent) { //representa uma musica no can
 }
 
 
-
-//chama funcao extend que extende (extend(subclasse,superclasse))...
 
 extend(CanvasItem, QGraphicsEllipseItem); 

@@ -168,18 +168,13 @@ function insertTag(tag,color){
 function modifyTag(tagID, name, color){
 	
 	
-	msg("entrou em modify tag, tag id = "+tagID+",name = "+name);
 	if (color) {
 		
-		msg("nova cor");
 		sql("UPDATE yamo_tags SET tag = '"+name+"', color = '"+color+"' WHERE id = "+tagID);
 	}
 	else {
 		
-		msg("nao mudou cor");
 		sql("UPDATE yamo_tags SET tag = '"+name+"' WHERE id = "+tagID);
-		
-		msg("novo nome = "+sql("select tag from yamo_tags where id = "+tagID));
 		
 	}
 }
@@ -378,8 +373,6 @@ function getValuesFromTheeseTags(tagFiltersSelected,trackID){
 					
 				}
 				
-				msg("trackID: "+trackID);
-				
 				if(tagFiltersSelected.length > 1){
 					
 					query =  " select tag,value from yamo_tracktag where track =";
@@ -417,6 +410,8 @@ function getValuesFromTheeseTags(tagFiltersSelected,trackID){
 							resultArray.push(resultItem);
 						}
 					}
+					
+					
 					
 					
 					return resultArray;

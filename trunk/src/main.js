@@ -65,8 +65,6 @@ function exit(flagDeletarDados){
 	
 	if (flagDeletarDados) {
 		
-		stMsg("deleting tracksdata");
-	
 		tracksData = null;
 	}
 	
