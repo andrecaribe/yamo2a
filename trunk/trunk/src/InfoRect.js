@@ -16,11 +16,13 @@ function InfoRect(x,y,w,h,parent){
 	
 	var track = parent.getTrack();
 	
-	var canvasRef = parent.getParent();
+	var sceneRef = parent.getScene();
 	
-	var canvasWidth = canvasRef.width();
+	var viewRef = parent.getView();
+	
+	var canvasWidth = viewRef.width;
 
-	var canvasHeight = canvasRef.height();
+	var canvasHeight = viewRef.height;
 	
 	var textTitle = track.getTitle();
 	
@@ -46,22 +48,24 @@ function InfoRect(x,y,w,h,parent){
 	
 	if(x + w > canvasWidth){
 		
+		msg("flip");
 		X = x - (bolaW + w);
 	}
 	else if(x < 0){
-
+		msg("flip");
 		X = bolaW ;
 
 	}
 	
 	if(y + h > canvasHeight){
 		
-		
+		msg("flip");
 		Y = y -((y+h) - canvasHeight);
 		
 	}
 	else if(y < 0){
 		
+		msg("flip");
 		Y = bolaH ;
 
 	}
@@ -76,9 +80,9 @@ function InfoRect(x,y,w,h,parent){
 	var pen = new QPen(new QColor(87,87,87,200));
 	pen.setWidth(2);
 	
-	var font = new QFont("Verdana",14,QFont.Bold);
+	var font = new QFont("Verdana",10,QFont.Bold);
 	
-	var font2 = new QFont("Verdana",12,QFont.Bold);
+	var font2 = new QFont("Verdana",9,QFont.Bold);
 	
 	rect.setBrush(brush);
 	
@@ -175,29 +179,29 @@ function InfoRect(x,y,w,h,parent){
 	this.draw = function(){
 		
 		
-		canvasRef.addItem(rect);
+		sceneRef.addItem(rect);
 
-		canvasRef.addItem(image);
+		sceneRef.addItem(image);
 
-		canvasRef.addItem(trackTitle)
+		sceneRef.addItem(trackTitle)
 
-		canvasRef.addItem(trackArtist);
+		sceneRef.addItem(trackArtist);
 
-		canvasRef.addItem(trackAlbum);
+		sceneRef.addItem(trackAlbum);
 		
 	}
 	
 	this.remove = function(){
 		
-		canvasRef.removeItem(rect);
+		sceneRef.removeItem(rect);
 
-		canvasRef.removeItem(image);
+		sceneRef.removeItem(image);
 
-		canvasRef.removeItem(trackTitle);
+		sceneRef.removeItem(trackTitle);
 
-		canvasRef.removeItem(trackArtist);
+		sceneRef.removeItem(trackArtist);
 
-		canvasRef.removeItem(trackAlbum);
+		sceneRef.removeItem(trackAlbum);
 
 	}
 	

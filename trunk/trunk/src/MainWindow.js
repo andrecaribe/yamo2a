@@ -140,6 +140,8 @@ function MainWindow()
 			
 			var canvasView = dialog.centralWidget.canvasView;
 			
+			var defaultMatrix = canvasView.matrix();
+			
 			var canvasScale = 1;
 			
 			
@@ -181,8 +183,6 @@ function MainWindow()
 			
 			dialog.show();
 			
-			
-			
 			showTagFilters(1);
 			
 			//=============================================================================
@@ -201,30 +201,38 @@ function MainWindow()
 				
 					canvasView.scale(0.9, 0.9);
 				}
+				
 			}
 			
 			//_____________________________________________________________________________
 			
 			
-			yamoCanvas.mousePressEvent = function(button){
+			yamoCanvas.mousePressEvent = function(event){
+				
+				
+				if(event.modifiers() & Qt.ControlModifier ){
+					
+					canvasView.dragMode = QGraphicsView.ScrollHandDrag;
+				}
+				else{
+						
+					canvasView.dragMode = QGraphicsView.RubberBandDrag;
+				}
 			
-				canvasView.dragMode = QGraphicsView.ScrollHandDrag;
+				
+				
 				
 			}
 			
 			
 			//_____________________________________________________________________________
 			
-			yamoCanvas.mouseReleaseEvent = function(button){
+			yamoCanvas.mouseReleaseEvent = function(event){
 			
-				canvasView.dragMode = QGraphicsView.NoDrag;
-				
+					if(event.modifiers() & Qt.ControlModifier ||event.modifiers() & Qt.ShiftModifier )
+						canvasView.dragMode = QGraphicsView.NoDrag;
+					
 			}
-			
-			
-			
-			
-			
 			
 			//_____________________________________________________________________________
 			
@@ -254,7 +262,6 @@ function MainWindow()
 			
 				if (index == 0) {
 					
-					msg("limpando yamo canvas");
 					yamoCanvas.clear();
 					
 					showTagFilters(1);
@@ -263,7 +270,7 @@ function MainWindow()
 				
 				else 
 					if (index == 1) {
-						msg("limpando yamo canvas");
+
 						yamoCanvas.clear();
 						
 						showTagFilters(2);
@@ -318,7 +325,6 @@ function MainWindow()
 			
 				if (canvasFilled) {
 				
-					msg("limpando yamo canvas");
 					yamoCanvas.clear();
 					
 					canvasFilled = false;
@@ -427,8 +433,8 @@ function MainWindow()
 					if (tagFiltersContainer.count() > 0) {
 					
 						tagFiltersContainer.removeAll();
+						
 						tagFiltersContainer.getScene().clear();
-						msg("limpando tag filters canvas");
 						
 					}
 					
@@ -471,13 +477,13 @@ function MainWindow()
 			//_________________________________________________________________________
 			
 			function showCirclesVisualization(){
-			
-			
 				
-			
+				
+				
+				canvasView.setMatrix(defaultMatrix);
+					
 			
 				if (!collectionArray) {
-				
 				
 					collectionArray = new Array();
 				}
@@ -688,17 +694,21 @@ function MainWindow()
 					collectionArray.push(tracks91a100);
 					
 					
-					
-					
 					buildCirclesVisualization(canvasView.sceneRect.width() / 2, canvasView.sceneRect.height() / 2, 80, collectionArray);
+					
+					
+					var zoomx = (canvasView.width) / (canvasView.sceneRect.width());
+					var zoomy = (canvasView.height) / (canvasView.sceneRect.height());
+				
+				
+					
+					canvasView.scale(zoomx, zoomy);
 					
 					
 				}
 				else {
 					Amarok.alert("Your collection is empty! Try clicking the button 'Rescan Collection'");
 				}
-				
-				
 				
 				
 			}
@@ -711,28 +721,9 @@ function MainWindow()
 			function showMiniPCAVisualization(){
 				
 				
+				canvasView.setSceneRect(0,0,canvasView.width,canvasView.height);
 				
-				var debugItem = function(item){
-					
-					msg("item name: "+item.name);
-					
-					if(item.value) {
-						msg("item value: " + item.value);
-					}
-					
-					
-					if(item.color){
-						msg("item color: " + item.color);
-					}
-					
-					if(item.id){
-						msg("item id: " + item.id);
-					}
-				}
-				
-			
-				
-				canvasView.resetMatrix();
+				canvasView.setMatrix(defaultMatrix);
 			
 				var tagFiltersSelected = new Array();
 				
@@ -784,7 +775,7 @@ function MainWindow()
 								var Y = mapValueToScreenCoordinate(ratings[0].value, 40, 'y');
 							}
 							
-							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksData[i], yamoCanvas);
+							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksData[i], yamoCanvas,canvasView);
 							
 							yamoCanvas.addItem(canvasItem);
 							
@@ -805,8 +796,6 @@ function MainWindow()
 						
 						
 						var arraysInitialized = false;
-						
-						msg("qtde: "+tracksData.length);
 						
 						
 						//GET MAX AND MIN VALUES FROM TAGS//
@@ -867,16 +856,7 @@ function MainWindow()
 						
 						var varianceArray = new Array();
 						
-						msg("max array");
-						for(i = 0; i < maxArray.length; i++){
-							
-							debugItem(maxArray[i]);
-						}
-						msg("min array");
-						for(i = 0; i < minArray.length; i++){
-							
-							debugItem(minArray[i]);
-						}
+						
 						
 						for (i = 0; i < maxArray.length; i++){
 							
@@ -890,29 +870,18 @@ function MainWindow()
 							
 							varianceArray.push(varianceItem);
 							
-							msg("variance array: "+varianceArray[i].name+","+varianceArray[i].value+","+varianceArray[i].id);
 						
 							
 						}
 						
 						
-						
-						
 						quickSort(varianceArray,1);
-						
-						
-						msg("variance array ordenado:");
-						
-						for (i = 0; i < varianceArray.length; i++) {
-							debugItem(varianceArray[i]);
-						}
 						
 						
 						var xAxisItem = varianceArray[varianceArray.length - 1]; //CHOOSE 2 TAGS WITH THE GREATEST 
 																				//VARIANCE AS COORDINATES TO PLOT TO SCREEN
 						var yAxisItem = varianceArray[varianceArray.length - 2];
 						
-						msg("x axis: "+xAxisItem.name+","+xAxisItem.value + ", y axis: "+yAxisItem.name+","+yAxisItem.value);
 						
 						var resultantTagFilters = new Array(xAxisItem,yAxisItem);
 						
@@ -938,7 +907,7 @@ function MainWindow()
 								var Y = mapValueToScreenCoordinate(ratings[0].value, 40, 'y');
 							}
 							
-							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksData[i], yamoCanvas);
+							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksData[i], yamoCanvas,canvasView);
 							
 							yamoCanvas.addItem(canvasItem);
 						
@@ -973,9 +942,9 @@ function MainWindow()
 				
 				var screenCoordinate;
 				
-				var screenWidth = yamoCanvas.sceneRect.width();
+				var screenWidth = canvasView.width;
 				
-				var screenHeight = yamoCanvas.sceneRect.height();
+				var screenHeight = canvasView.height;
 				
 				if(axis == 'x'){
 					
@@ -1076,11 +1045,6 @@ function MainWindow()
 					contCores += 1;
 				}
 				
-				var zoomx = (canvasView.sceneRect.width()) / (greatestRadius * 2);
-				var zoomy = (canvasView.sceneRect.height()) / (greatestRadius * 2);
-				
-				canvasView.resetMatrix();
-				canvasView.scale(zoomx, zoomy);
 				
 				
 			}
@@ -1163,7 +1127,7 @@ function MainWindow()
 					y2 = (rprincipal * Math.sin(angle)) + y;
 					
 					
-					var canvasItem = new CanvasItem(x2 - raiomenor, y2 - raiomenor, raiomenor * 2, raiomenor * 2, color, tracks[contador], yamoCanvas);
+					var canvasItem = new CanvasItem(x2 - raiomenor, y2 - raiomenor, raiomenor * 2, raiomenor * 2, color, tracks[contador], yamoCanvas,canvasView);
 					
 					canvasItem.setZValue(6);
 					yamoCanvas.addItem(canvasItem);
@@ -1171,6 +1135,7 @@ function MainWindow()
 					contador++;
 					
 				}
+				
 				return raiomenor;
 				
 				
@@ -1196,13 +1161,12 @@ function MainWindow()
 						
 						for (i = 0; i < n; i++) {
 							
-							msg("tag selected value: "+tagFiltersSelected[i].value+"rating value: "+ratings[i].value);
 							
 							somatorium += Math.abs(tagFiltersSelected[i].value - ratings[i].value);
 							
-							msg("somatorium = "+somatorium);
 						}
-						resultPercentage = 100 - (somatorium / n);
+						resultPercentage = parseInt(100 - (somatorium / n));
+						
 						return resultPercentage;
 					
 				

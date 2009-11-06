@@ -5,7 +5,6 @@
  
  function ItemSelectFilter(type){
  	
-	//ItemSelectFilter.superclass.call(this);
 	
 	var type = type;
 	
@@ -60,5 +59,3 @@
 	
  }
  
- 
- //extend(ItemSelectFilter,QWidget);

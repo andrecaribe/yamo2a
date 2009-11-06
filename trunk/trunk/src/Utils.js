@@ -152,6 +152,9 @@ function radianToDegree(radian){
 ///////////////////////////////
 
 
+
+
+
 /////////////QUICK SORT/////////////
 
 var pivot = new Object();
@@ -217,10 +220,9 @@ function q_sort1(array, left, right){ //sorts an array of objects (name, value)
 
 function quickSort(array,type){
 	
-	msg("entrou em quickSort");
 	
 	if (type == 1) {
-		msg("type = 1");
+
 		q_sort1(array, 0, array.length - 1);
 	}
 	else 
