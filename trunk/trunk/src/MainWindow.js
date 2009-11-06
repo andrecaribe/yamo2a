@@ -720,7 +720,8 @@ function MainWindow()
 			
 			function showMiniPCAVisualization(){
 				
-				
+				var tracksTemp = new Array();
+
 				canvasView.setSceneRect(0,0,canvasView.width,canvasView.height);
 				
 				canvasView.setMatrix(defaultMatrix);
@@ -806,6 +807,9 @@ function MainWindow()
 							
 							
 							if (ratings) {
+								
+								tracksTemp.push(tracksData[i]);
+
 							
 								for (var j = 0; j < ratings.length; j++) {
 									
@@ -886,10 +890,10 @@ function MainWindow()
 						var resultantTagFilters = new Array(xAxisItem,yAxisItem);
 						
 						
-						for (var i = 0; i < tracksData.length; i++) { //PLOT TRACKS ON SCREEN BASED ON ABOVE TAGS
+						for (var i = 0; i < tracksTemp.length; i++) { //PLOT TRACKS ON SCREEN BASED ON ABOVE TAGS
 						
 						
-							var ratings = getValuesFromTheeseTags(resultantTagFilters, tracksData[i].getID());
+							var ratings = getValuesFromTheeseTags(resultantTagFilters, tracksTemp[i].getID());
 							
 							if (!ratings) continue;
 							
@@ -907,7 +911,7 @@ function MainWindow()
 								var Y = mapValueToScreenCoordinate(ratings[0].value, 40, 'y');
 							}
 							
-							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksData[i], yamoCanvas,canvasView);
+							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksTemp[i], yamoCanvas,canvasView);
 							
 							yamoCanvas.addItem(canvasItem);
 						
