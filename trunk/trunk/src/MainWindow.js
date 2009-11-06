@@ -992,7 +992,7 @@ function MainWindow()
 				var contCores = 1;
 				
 				//////////////
-				var currentColor = new QColor(180, 180, 180);
+				var currentColor = new QColor(100, 180, 220);
 				////////////////
 				
 				for (var i = collectionArray.length - 1; i >= 0; i--) {
@@ -1023,7 +1023,7 @@ function MainWindow()
 			 }*/
 					guideCircle.setZValue(i);
 					
-					var newColor = new QColor(Math.max(currentColor.red() - contCores * 5, 0), Math.max(currentColor.green() - contCores * 5, 0), Math.max(currentColor.blue() - contCores * 5, 0), 200);
+					var newColor = new QColor(Math.max(currentColor.red() - contCores * 2, 0), Math.max(currentColor.green() - contCores * 2, 0), Math.max(currentColor.blue() - contCores * 2, 0), 200);
 					
 					
 					currentColor = newColor;
