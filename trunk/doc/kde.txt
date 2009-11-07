@@ -1,1 +1,43 @@
 kde-ev-board@kde.org
+
+
+Para testes do YAMO foram desenvolvidos dois estudos de caso, envolvendo um acervo de 730 (setecentos e trinta) músicas de diversos artistas, álbuns, gêneros e anos de publicação diferentes. Pretendemos assim, diversificar a coleção de músicas abrangendo pequenas e grandes variações entre as mesmas.
+
+Foram criados 16 (desesseis) marcadores YAMO: alegre, agitado, feminino, masculino, instrumental, ambiente, calmo, triste, medieval, moderno, brutal, romântico, sombrio, crítica, clássico e engraçado.
+
+
+
+
+
+
+objetivo
+
+Para teste do YAMO foram desenvolvidos dois estudos de caso
+provar que é possivel organizar as músicas com YAMO
+selecionar músicas requeridas "facilmente"
+
+escopo
+
+O usuário neste teste possui conhecimentos sobre o Amarok
+Músicas já estão marcadas
+quais músicas
+quais marcas
+
+
+
+método
+
+Cria-se associações
+Usuário busca
+
+
+
+resultados
+
+As músicas.. porcentagem de acerto
+
+
+
+conclustões
+
+quanto mais tag mais acerto?
