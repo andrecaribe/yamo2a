@@ -110,6 +110,12 @@ function createArrayOfTracks(queryResult,ncols){
 			var year = queryResult[i+8];
 			
 			var image = queryResult[i+9];
+			
+			if(image == ""){
+			    
+			    image = Amarok.Info.scriptPath() + "/nocover.png";
+			    
+			}
 		
 			resultArray.push(
 			

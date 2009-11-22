@@ -600,20 +600,18 @@ function GerenciamentoTagsWindow(parent){
 				
 				function showArtistList(){
 				
-				
-				
-					if (lstArtists.count > 0) {
-						lstArtists.clear();
-					}
-					
-					if (artistContainer.length > 0) {
-						artistContainer.clear();
-					}
-					
-					
 					var artistList = getAllArtists();
 					
 					if (artistList.length > 0) {
+
+
+						if (lstArtists.count > 0) {
+						    lstArtists.clear();
+						}
+					
+						if (artistContainer.length > 0) {
+						    artistContainer.clear();
+						}
 					
 						pagEnabled[0] = true;
 						for (var j = 0; j < artistList.length; j++) {
@@ -626,6 +624,8 @@ function GerenciamentoTagsWindow(parent){
 								artistContainer.push([artistList[j], artistList[j + 1]]);
 							}
 						}
+					}else{
+						Amarok.alert("Your database collection does not contain any artist registries.\n Check your collection data !")
 					}
 					
 					
@@ -636,29 +636,25 @@ function GerenciamentoTagsWindow(parent){
 				
 				function showAlbumsOfArtist(ID){
 				
-				
-				
-					if (collectionBrowser.currentIndex != 1) {
-						collectionBrowser.setCurrentIndex(1);
-					}
-					
-					
-					if (lstAlbums.count > 0) {
-					
-						lstAlbums.clear();
-					}
-					
-					if (albumContainer.length > 0) {
-						albumContainer.clear();
-					}
-					
-					
+									
 					var albumList = getAllAlbumsFromArtist(ID);
 					
-					
-					
-					
+									
 					if (albumList.length > 0) {
+
+						if (collectionBrowser.currentIndex != 1) {
+							collectionBrowser.setCurrentIndex(1);
+						}
+						
+						
+						if (lstAlbums.count > 0) {
+						
+							lstAlbums.clear();
+						}
+						
+						if (albumContainer.length > 0) {
+							albumContainer.clear();
+						}
 					
 					
 						pagEnabled[1] = true;
@@ -677,6 +673,9 @@ function GerenciamentoTagsWindow(parent){
 							}
 						}
 					}
+					else{
+						Amarok.alert("No albums found for this artist! Check your collection data !");
+					}
 					
 				}
 				
@@ -687,24 +686,27 @@ function GerenciamentoTagsWindow(parent){
 				
 				
 				
-					if (collectionBrowser.currentIndex != 2) {
-						collectionBrowser.setCurrentIndex(2);
-					}
 					
-					
-					if (lstMusics.count > 0) {
-					
-						lstMusics.clear();
-					}
-					
-					if (musicContainer.length > 0) {
-					
-						musicContainer.clear();
-					}
 					
 					var musicsList = getAllTracksFromAlbum(ID);
 					
 					if (musicsList.length > 0) {
+
+
+						if (collectionBrowser.currentIndex != 2) {
+						      collectionBrowser.setCurrentIndex(2);
+						}
+					
+					
+						if (lstMusics.count > 0) {
+					
+						      lstMusics.clear();
+						}
+					
+						if (musicContainer.length > 0) {
+					
+						      musicContainer.clear();
+						}
 					
 						pagEnabled[2] = true;
 						
@@ -720,6 +722,8 @@ function GerenciamentoTagsWindow(parent){
 							}
 						}
 						
+					}else{
+						 Amarok.alert("No tracks found for this album! Check your collection data! "); 
 					}
 				}
 				
