@@ -7,10 +7,7 @@ function MainWindow()
 
 {	
 
-		
-		
-		
-		
+				
 			//=============PRIVATE VARIABLES===============================================
 			
 			var dialog = loadWindow("MainWindow_beta.ui");
@@ -37,6 +34,13 @@ function MainWindow()
 			
 			var cmbMethod = dialog.centralWidget.tabs.children()[0].tabFilters.cmbMethod;
 			
+			var lstPlaylist = dialog.centralWidget.tabs.children()[0].tabPlaylist.lstPlaylist;
+			
+			var btnPlay = dialog.centralWidget.tabs.children()[0].tabPlaylist.btnPlay;
+			
+			var btnPause = dialog.centralWidget.tabs.children()[0].tabPlaylist.btnPause;
+			
+			var btnStop = dialog.centralWidget.tabs.children()[0].tabPlaylist.btnStop;
 			
 			
 			var tagFiltersListView = dialog.centralWidget.tabs.children()[0].tabFilters.groupYAMOFilters.tagFiltersList;
@@ -46,6 +50,8 @@ function MainWindow()
 			
 			tagFiltersListView.setScene(tagFiltersContainer.getScene());
 			
+			var methodSelected = 0;
+			
 			
 			var cont = 1;
 			
@@ -53,7 +59,7 @@ function MainWindow()
 			
 			
 			
-			var genres = sql("SELECT id, name from genres");
+			var genres = sql("SELECT  id, name from genres");
 			
 			for (i = 0; i < genres.length; i++) {
 			
@@ -142,9 +148,11 @@ function MainWindow()
 			
 			var defaultMatrix = canvasView.matrix();
 			
-			var canvasScale = 1;
-			
-			
+			var circlesDefaultMatrix;
+
+
+
+
 			function _yamoCanvas(scenerect){
 			
 				_yamoCanvas.superclass.call(this, scenerect);
@@ -180,10 +188,18 @@ function MainWindow()
 			
 			//=======ON INIT===============================================================
 			
-			
+			canvasView.setSceneRect(0,0,canvasView.width,canvasView.height);
 			dialog.show();
 			
 			showTagFilters(1);
+			
+			for (var i = 0; i < Amarok.Playlist.totalTrackCount(); i++) {
+					
+						var track = Amarok.Playlist.trackAt(i);
+						
+						lstPlaylist.addItem(track.title + " - " + track.artist)
+						
+					}
 			
 			//=============================================================================
 			
@@ -193,14 +209,38 @@ function MainWindow()
 			
 			
 			yamoCanvas.wheelEvent = function(wheel){
-			
-				if (wheel.delta() > 0) {
-					canvasView.scale(1.1, 1.1);
-				}
-				else {
 				
-					canvasView.scale(0.9, 0.9);
-				}
+				    if(methodSelected == 0){
+				    
+					if (wheel.delta() > 0) {
+						canvasView.scale(1.1, 1.1);
+					}
+					else {
+					
+						canvasView.scale(0.9, 0.9);
+					}
+				    }
+				    else if(methodSelected == 1){
+				    
+					    msg("zoom");
+				           var items = yamoCanvas.items();		    
+					  for(var i = 0; i < items.length; i++){
+						var item = items[i];
+						var pos = item.pos();
+						if (wheel.delta() > 0) {
+						
+					             		
+						    item.scale(1.1,1.1);
+						    item.setPos(pos);
+						}
+						else {
+					
+						   item.scale(0.9, 0.9);
+						    item.setPos(pos);
+						}		
+					    
+					   }
+				    }
 				
 			}
 			
@@ -218,10 +258,9 @@ function MainWindow()
 						
 					canvasView.dragMode = QGraphicsView.RubberBandDrag;
 				}
-			
 				
 				
-				
+				msg("scene rect: "+canvasView.sceneRect.toString());
 			}
 			
 			
@@ -236,11 +275,98 @@ function MainWindow()
 			
 			//_____________________________________________________________________________
 			
+
+			lstPlaylist.itemDoubleClicked.connect(function(item){
+			
+			    Amarok.Playlist.playByIndex(lstPlaylist.currentRow);
+			
+			
+			});
+			
+
+
+			cmbArtist['currentIndexChanged(int)'].connect(function(index){
+			
+			    msg("entrou");
+			    
+			    if(index != 0){
+								
+				var artistID = cmbArtist.itemData(index); 
+				
+				msg("artist ID: "+artistID);
+								
+				var query = "SELECT id, name from albums where artist = "+artistID;
+				
+				var albums = sql(query);
+							
+				if(albums.length > 0){
+				    				    
+				    cmbAlbum.clear();
+								    
+				    var cont = 0;
+				    
+				    cmbAlbum.addItem("All");
+				    
+				    for (i = 0; i < albums.length; i++) {
+				    
+					    if (i % 2 == 0) {
+						    
+						    cont++;			    
+						    cmbAlbum.addItem(albums[i + 1]);
+						    cmbAlbum.setItemData(cont, albums[i]);
+						    
+						    
+					    }
+					    
+				    }
+
+				}
+			    }else{
+				    
+				    cmbAlbum.clear();
+				    
+				    cmbAlbum.addItem("All");
+				    
+				    var albums = sql("SELECT id, name from albums");
+				    				    
+				    var cont = 0;
+				    for (i = 0; i < albums.length; i++) {
+				    
+					    if (i % 2 == 0) {
+					    
+						    cont++;
+					    
+						    cmbAlbum.addItem(albums[i + 1]);
+						    cmbAlbum.setItemData(cont, albums[i]);
+						    
+					    }
+					    
+				    }
+			    
+			    }
+			
+			
+			});
+			
+			
+			cmbAlbum['currentIndexChanged(int)'].connect(function(index){
+			
+				var albumID = cmbAlbum.itemData(index); 
+				
+				msg("album ID: "+albumID);
+			    
+			
+			});
 			
 			cmbZoom['currentIndexChanged(int)'].connect(function(item){
 			
-			
-				canvasView.resetMatrix();
+				if(methodSelected == 0){
+				    msg("entrou");
+				    canvasView.setMatrix(circlesDefaultMatrix);
+				}
+				else{
+				    canvasView.setMatrix(defaultMatrix);
+				}
 				
 				if (item == 1) {
 				
@@ -261,16 +387,21 @@ function MainWindow()
 			
 			
 				if (index == 0) {
+				
+					methodSelected = 0;
 					
 					yamoCanvas.clear();
 					
 					showTagFilters(1);
 					
+					
 				}
 				
 				else 
 					if (index == 1) {
-
+					
+						methodSelected = 1;
+					
 						yamoCanvas.clear();
 						
 						showTagFilters(2);
@@ -389,6 +520,28 @@ function MainWindow()
 				
 			});
 			
+			btnPlay.clicked.connect(function(){
+			    
+			    var currentRow = lstPlaylist.currentRow;
+			    
+			    Amarok.Playlist.playByIndex(currentRow);
+			
+			});
+			
+			
+			btnPause.clicked.connect(function(){
+			    
+				Amarok.Engine.Pause();
+			
+			});
+			
+			btnStop.clicked.connect(function(){
+			    
+				Amarok.Engine.Stop();
+			
+			});
+			
+			
 			
 			
 			//=============================================================================
@@ -479,6 +632,11 @@ function MainWindow()
 			function showCirclesVisualization(){
 				
 				
+				msg("reseting scene rect:");
+				
+				canvasView.setSceneRect(0,0,canvasView.width,canvasView.height);
+				
+				msg("scene rect: "+(canvasView.sceneRect).toString());
 				
 				canvasView.setMatrix(defaultMatrix);
 					
@@ -694,16 +852,20 @@ function MainWindow()
 					collectionArray.push(tracks91a100);
 					
 					
-					buildCirclesVisualization(canvasView.sceneRect.width() / 2, canvasView.sceneRect.height() / 2, 80, collectionArray);
+					msg("scene rect: "+canvasView.sceneRect.toString());
 					
+					var sizeNeeded = buildCirclesVisualization(canvasView.sceneRect.width() / 2, canvasView.sceneRect.height() / 2, 80, collectionArray);
 					
-					var zoomx = (canvasView.width) / (canvasView.sceneRect.width());
-					var zoomy = (canvasView.height) / (canvasView.sceneRect.height());
+					var zoomx = (canvasView.sceneRect.width()) / (sizeNeeded);
+					var zoomy = (canvasView.sceneRect.height()) / (sizeNeeded);
+					
+					msg("size needed : "+sizeNeeded);
 				
-				
+					
 					
 					canvasView.scale(zoomx, zoomy);
 					
+					circlesDefaultMatrix = canvasView.matrix();
 					
 				}
 				else {
@@ -720,9 +882,12 @@ function MainWindow()
 			
 			function showMiniPCAVisualization(){
 				
-				var tracksTemp = new Array();
-
+				 msg("setting scene rect: ");
+				   
+			
 				canvasView.setSceneRect(0,0,canvasView.width,canvasView.height);
+				
+				msg("scene rect: "+(canvasView.sceneRect).toString());
 				
 				canvasView.setMatrix(defaultMatrix);
 			
@@ -788,7 +953,8 @@ function MainWindow()
 					}
 					else if (tagFiltersSelected.length > 2){
 						
-					
+						
+						var tracksTemp = new Array();
 						
 						
 						var minArray = new Array(tagFiltersSelected.length);
@@ -807,6 +973,8 @@ function MainWindow()
 							
 							
 							if (ratings) {
+							
+								msg("rating found for track "+tracksData[i].getTitle());
 								
 								tracksTemp.push(tracksData[i]);
 
@@ -885,6 +1053,11 @@ function MainWindow()
 						var xAxisItem = varianceArray[varianceArray.length - 1]; //CHOOSE 2 TAGS WITH THE GREATEST 
 																				//VARIANCE AS COORDINATES TO PLOT TO SCREEN
 						var yAxisItem = varianceArray[varianceArray.length - 2];
+						
+						msg("tags choosen as wich have the most variance(most relevance)");
+						
+						msg("x axis: "+xAxisItem.name);
+						msg("y axis: "+yAxisItem.name);
 						
 						
 						var resultantTagFilters = new Array(xAxisItem,yAxisItem);
@@ -981,8 +1154,6 @@ function MainWindow()
 			function buildCirclesVisualization(x, y, raioinicial, collectionArray){
 			
 			
-				var greatestRadius;
-				
 				
 				if (collectionArray.length == 0) {
 				
@@ -1002,13 +1173,6 @@ function MainWindow()
 				for (var i = collectionArray.length - 1; i >= 0; i--) {
 				
 					var guideCircle = new QGraphicsEllipseItem(x - (raio + 18.5), y - (raio + 18.5), (raio + 18.5) * 2, (raio + 18.5) * 2);
-					
-					
-					if (i == 0) {
-					
-						greatestRadius = (raio + 18.5);
-					}
-					
 					
 					/*if (i == 4) {
 			 
@@ -1045,11 +1209,10 @@ function MainWindow()
 					
 					raio = raio + 2.5 * ultimoRaio;
 					
-					
 					contCores += 1;
 				}
 				
-				
+				return raio*2;
 				
 			}
 			
