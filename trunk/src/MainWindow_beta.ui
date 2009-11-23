@@ -31,7 +31,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabFilters">
        <attribute name="title">
@@ -348,12 +348,12 @@
          <widget class="QComboBox" name="cmbMethod">
           <item>
            <property name="text">
-            <string>Circle </string>
+            <string>Circles </string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Mini PCA</string>
+            <string>Simplified PCA</string>
            </property>
           </item>
          </widget>
@@ -475,7 +475,7 @@
        <enum>QGraphicsView::FullViewportUpdate</enum>
       </property>
       <property name="rubberBandSelectionMode">
-       <enum>Qt::ContainsItemBoundingRect</enum>
+       <enum>Qt::IntersectsItemShape</enum>
       </property>
      </widget>
     </item>

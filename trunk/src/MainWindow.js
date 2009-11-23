@@ -50,7 +50,6 @@ function MainWindow()
 			
 			tagFiltersListView.setScene(tagFiltersContainer.getScene());
 			
-			var methodSelected = 0;
 			
 			
 			var cont = 1;
@@ -144,24 +143,17 @@ function MainWindow()
 			
 			var canvasFilled = false;
 			
+			var canvasItemsArray
+			
 			var canvasView = dialog.centralWidget.canvasView;
 			
 			var defaultMatrix = canvasView.matrix();
 			
 			var circlesDefaultMatrix;
 
-
-
-
-			function _yamoCanvas(scenerect){
-			
-				_yamoCanvas.superclass.call(this, scenerect);
-				
-			}
-			extend(_yamoCanvas, QGraphicsScene);
 			
 			
-			var yamoCanvas = new _yamoCanvas(canvasView.sceneRect);
+			var yamoCanvas = new _yamoCanvas(canvasView);
 			
 			
 			canvasView.setScene(yamoCanvas);
@@ -208,70 +200,10 @@ function MainWindow()
 			//====ACTIONS==================================================================
 			
 			
-			yamoCanvas.wheelEvent = function(wheel){
-				
-				    if(methodSelected == 0){
-				    
-					if (wheel.delta() > 0) {
-						canvasView.scale(1.1, 1.1);
-					}
-					else {
-					
-						canvasView.scale(0.9, 0.9);
-					}
-				    }
-				    else if(methodSelected == 1){
-				    
-					    msg("zoom");
-				           var items = yamoCanvas.items();		    
-					  for(var i = 0; i < items.length; i++){
-						var item = items[i];
-						var pos = item.pos();
-						if (wheel.delta() > 0) {
-						
-					             		
-						    item.scale(1.1,1.1);
-						    item.setPos(pos);
-						}
-						else {
-					
-						   item.scale(0.9, 0.9);
-						    item.setPos(pos);
-						}		
-					    
-					   }
-				    }
-				
-			}
-			
-			//_____________________________________________________________________________
 			
 			
-			yamoCanvas.mousePressEvent = function(event){
-				
-				
-				if(event.modifiers() & Qt.ControlModifier ){
-					
-					canvasView.dragMode = QGraphicsView.ScrollHandDrag;
-				}
-				else{
-						
-					canvasView.dragMode = QGraphicsView.RubberBandDrag;
-				}
-				
-				
-				msg("scene rect: "+canvasView.sceneRect.toString());
-			}
 			
 			
-			//_____________________________________________________________________________
-			
-			yamoCanvas.mouseReleaseEvent = function(event){
-			
-					if(event.modifiers() & Qt.ControlModifier ||event.modifiers() & Qt.ShiftModifier )
-						canvasView.dragMode = QGraphicsView.NoDrag;
-					
-			}
 			
 			//_____________________________________________________________________________
 			
@@ -360,7 +292,7 @@ function MainWindow()
 			
 			cmbZoom['currentIndexChanged(int)'].connect(function(item){
 			
-				if(methodSelected == 0){
+				if(yamoCanvas.methodSelected == 0){
 				    msg("entrou");
 				    canvasView.setMatrix(circlesDefaultMatrix);
 				}
@@ -388,9 +320,9 @@ function MainWindow()
 			
 				if (index == 0) {
 				
-					methodSelected = 0;
+					yamoCanvas.methodSelected = 0;
 					
-					yamoCanvas.clear();
+					yamoCanvas._clear();
 					
 					showTagFilters(1);
 					
@@ -400,9 +332,9 @@ function MainWindow()
 				else 
 					if (index == 1) {
 					
-						methodSelected = 1;
+						yamoCanvas.methodSelected = 1;
 					
-						yamoCanvas.clear();
+						yamoCanvas._clear();
 						
 						showTagFilters(2);
 						
@@ -416,7 +348,7 @@ function MainWindow()
 			btnExit.clicked.connect(function(){
 			
 				
-				yamoCanvas.clear();
+				yamoCanvas._clear();
 				
 				tagFiltersContainer.getScene().clear();
 				
@@ -456,7 +388,7 @@ function MainWindow()
 			
 				if (canvasFilled) {
 				
-					yamoCanvas.clear();
+					yamoCanvas._clear();
 					
 					canvasFilled = false;
 				}
@@ -943,7 +875,7 @@ function MainWindow()
 							
 							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksData[i], yamoCanvas,canvasView);
 							
-							yamoCanvas.addItem(canvasItem);
+							yamoCanvas._addItem(canvasItem,true);
 							
 							
 							
@@ -1086,7 +1018,7 @@ function MainWindow()
 							
 							var canvasItem = new CanvasItem(X, Y, 40, 40, defaultColor, tracksTemp[i], yamoCanvas,canvasView);
 							
-							yamoCanvas.addItem(canvasItem);
+							yamoCanvas._addItem(canvasItem,true);
 						
 						
 						}
@@ -1203,7 +1135,7 @@ function MainWindow()
 					
 					guideCircle.setPen(linePen);
 					
-					yamoCanvas.addItem(guideCircle);
+					yamoCanvas._addItem(guideCircle,false);
 					
 					var ultimoRaio = drawCircles(x, y, raio, currentColor, collectionArray[i])
 					
@@ -1297,7 +1229,7 @@ function MainWindow()
 					var canvasItem = new CanvasItem(x2 - raiomenor, y2 - raiomenor, raiomenor * 2, raiomenor * 2, color, tracks[contador], yamoCanvas,canvasView);
 					
 					canvasItem.setZValue(6);
-					yamoCanvas.addItem(canvasItem);
+					yamoCanvas._addItem(canvasItem,true);
 					
 					contador++;
 					

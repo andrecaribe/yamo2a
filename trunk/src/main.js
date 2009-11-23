@@ -15,6 +15,7 @@ Importer.include("TagValueProgressBar.js");
 Importer.include("DialogModifyValue.js");
 Importer.include("ItemSelectFilter.js");
 Importer.include("TagFilterContainer.js");
+Importer.include("YamoCanvas.js");
 
 
 

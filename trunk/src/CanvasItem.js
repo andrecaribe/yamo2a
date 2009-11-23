@@ -10,6 +10,8 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
     
 	this.itemColor = color;
 	
+	var defaultColor = color;
+	
 	var pen = new QPen(new QColor(61,61,61,180));
 	
 	var self = this;
@@ -17,6 +19,10 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 	var menu = null;
 	
 	var brush = new QBrush(this.itemColor);
+	
+	var scaleFactor = 0.9;
+	
+	this.setFlag(QGraphicsItem.ItemIsSelectable);
 	
 	this.clickedMe = false;
 	
@@ -109,6 +115,9 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 		
 		this.infoRect.draw();
 		
+		this.setColor(new QColor(150,200,240));
+		
+		msg(this.ItemIsSelectable);
 			
     }
 	
@@ -126,6 +135,7 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 				this.infoRect.remove();
 			}
 			
+			this.setColor(defaultColor);
 	}
 	
 	
