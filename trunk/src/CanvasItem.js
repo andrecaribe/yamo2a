@@ -13,16 +13,20 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 	var defaultColor = color;
 	
 	var pen = new QPen(new QColor(61,61,61,180));
+	var pen2 = new QPen(new QColor(150,200,240));
+	pen2.setWidth(5);
 	
 	var self = this;
 	
 	var menu = null;
 	
+	var selectionCircle;
+	
+	var isSelected = false;
+	
 	var brush = new QBrush(this.itemColor);
 	
 	var scaleFactor = 0.9;
-	
-	this.setFlag(QGraphicsItem.ItemIsSelectable);
 	
 	this.clickedMe = false;
 	
@@ -147,6 +151,27 @@ function CanvasItem(X,Y,W,H,color,track,scene,view) {
 		brush.setColor(this.itemColor);
 		
 		this.setBrush(brush);
+	}
+	
+	
+	this.setSelected = function(flag){
+	    
+	    if(flag){
+		
+		this.isSelected = true;
+		selectionCircle = new QGraphicsEllipseItem(this.X-1,this.Y-1,this.W+1,this.H+1);
+		selectionCircle.setPen(pen2);
+		selectionCircle.setZValue(2);
+		scene.addItem(selectionCircle);
+	    }
+	    else{
+		this.isSelected = false;
+		if(selectionCircle){
+		    msg("entrou");
+		    scene.removeItem(selectionCircle);
+		    selectionCircle = null;
+		}
+	    }
 	}
 	
 	

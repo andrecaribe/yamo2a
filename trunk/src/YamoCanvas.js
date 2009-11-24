@@ -15,6 +15,12 @@ function _yamoCanvas(view){
 	
 	this.items = new Array();
 	
+	this.selectedItems = new Array();
+	
+	var self = this;
+	
+	var posA, posB;
+	
 	this._addItem = function(item,addToArray){
 	
 	    if(addToArray)
@@ -86,7 +92,7 @@ function _yamoCanvas(view){
 			view.dragMode = QGraphicsView.RubberBandDrag;
 		}
 		
-	
+		posA = QCursor.pos();
 	
 		
 		
@@ -98,50 +104,72 @@ function _yamoCanvas(view){
 			
 		if(event.modifiers() & Qt.ControlModifier ||event.modifiers() & Qt.ShiftModifier )
 			view.dragMode = QGraphicsView.NoDrag;
+		
+		posB = QCursor.pos();
+		
+		msg(posA.toString());
+		msg(posB.toString());
+		
+		if(posA.x() != posB.x() && posA.y() != posB.y()){
+		    
+		    msg("abriu selecao...");
+		   
+		   this.getSelectedItems();
+		
+		
+		    if(this.selectedItems.length > 0){
+			for(var i = 0; i < this.selectedItems.length; i++){
+			    msg("ID: "+this.selectedItems[i].track.getID().toString());
 			
-		
-		var selectedItems = this.getSelectedItems();
-		
-		
-		if(selectedItems.length > 0){
-		    for(var i = 0; i < selectedItems.length; i++){
-			msg("ID: "+selectedItems[i].track.getID().toString());
+			}
 		    
 		    }
+		    
+		    msg(this.selectedItems.toString());
 		
 		}
+		else{
+		    if(this.selectedItems.length > 0)
+			deselectAll();
+		    
+		    if(this.selectedItems.length == 0) msg("nenhum item selecionado");
+		}
+		
+		
 		
 					
 	}
 	
 	this.getSelectedItems = function(){
 	    
-	    var selectedItems = new Array();
-	    
-	    if(this.selectionArea().elementCount() == 0) {
-		msg("empty");
-		msg(this.selectionArea().toString());
-		return;
-	    }
-	    
-	   
 	    
 	    var items = this.items;
     
 	    for(var i = 0; i < items.length; i++){
 		
-		if(this.selectionArea().contains(items[i].boundingRect())){
+		if(this.selectionArea().intersects(items[i].boundingRect())){
 		    
-		    selectedItems.push(items[i]);
+		    items[i].setSelected(true);
+		    this.selectedItems.push(items[i]);
 		    msg("achou");
 		
 		}
 	    
 	    } 
 	    
-	    return selectedItems;
-	    
 	
+	}
+	
+	function deselectAll(){
+	    msg("entrou em deselect all");
+	    for(var i = 0; i < self.items.length; i++){
+		msg("loop");
+		self.items[i].setSelected(false);
+	    
+	    }
+	    
+	    self.selectedItems.clear();
+	    msg("limpou array");
 	}
 	
 			
