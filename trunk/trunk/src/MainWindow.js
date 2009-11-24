@@ -12,8 +12,8 @@ function MainWindow()
 			
 			var dialog = loadWindow("MainWindow_beta.ui");
 			
-			
-			
+			dialog.centralWidget.gradientX.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
+			dialog.centralWidget.gradientY.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
 			var self = this;
 			
 			var linePen = new QPen(new QColor(61, 61, 61, 180));
@@ -816,7 +816,7 @@ function MainWindow()
 				
 				 msg("setting scene rect: ");
 				   
-			
+				msg("executando mini pca, canvasView width: "+canvasView.width+" canvas view height: "+canvasView.height);
 				canvasView.setSceneRect(0,0,canvasView.width,canvasView.height);
 				
 				msg("scene rect: "+(canvasView.sceneRect).toString());
@@ -1051,26 +1051,22 @@ function MainWindow()
 				
 				var screenCoordinate;
 				
-				var screenWidth = canvasView.width;
+				var screenWidth = canvasView.width - 45;
 				
-				var screenHeight = canvasView.height;
+				msg("map value, screenwidth: "+screenWidth);
+				
+				var screenHeight = canvasView.height - 45;
 				
 				if(axis == 'x'){
 					
 					screenCoordinate = (screenWidth * value / 100);
-					if(screenCoordinate == screenWidth){
-						
-						screenCoordinate -= ball_radius;
-					}
+					msg("colocando bola no ponto x: "+screenCoordinate);
 				}
 				else if(axis == 'y'){
 					
 					screenCoordinate = (screenHeight * value / 100);
-					if(screenCoordinate == screenHeight){
-						
-						screenCoordinate -= ball_radius;
-					}
 					
+					msg("colocando bola no ponto y: "+screenCoordinate);
 				}
 				
 				
