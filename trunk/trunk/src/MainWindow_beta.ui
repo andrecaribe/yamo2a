@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>::YAMO::</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_4">
@@ -472,7 +472,7 @@
        <cursorShape>CrossCursor</cursorShape>
       </property>
       <property name="styleSheet">
-       <string>background-color: rgb(85, 85, 85);</string>
+       <string>background-color: rgb(10, 10, 10);</string>
       </property>
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>

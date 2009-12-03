@@ -11,9 +11,10 @@ function MainWindow()
 			//=============PRIVATE VARIABLES===============================================
 			
 			var dialog = loadWindow("MainWindow_beta.ui");
+			var defaultColor = new QColor(180,180,180);
 			
-			dialog.centralWidget.gradientX.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
-			dialog.centralWidget.gradientY.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));");
+			
+			
 			var self = this;
 			
 			var linePen = new QPen(new QColor(61, 61, 61, 180));
@@ -22,7 +23,9 @@ function MainWindow()
 			
 			var font = new QFont("Verdana", 22, QFont.Bold);
 			
-			var defaultColor = new QColor(180,180,180);
+			
+			
+			
 			
 			var font2 = new QFont("Verdana", 10, QFont.Bold);
 			
@@ -852,9 +855,30 @@ function MainWindow()
 					
 					
 					if (tagFiltersSelected.length == 2) {
+						
+						
+						
+						var xAxisColor = new QColor(getColorFromTagID(tagFiltersSelected[0].id).toString());
+						var yAxisColor = new QColor(getColorFromTagID(tagFiltersSelected[1].id).toString());
 					
+						
+					
+						var rx = xAxisColor.red();
+						var gx = xAxisColor.green();
+						var bx = xAxisColor.blue();
+						
+						var ry = yAxisColor.red();
+						var gy = yAxisColor.green();
+						var by = yAxisColor.blue();
+						dialog.centralWidget.gradientX.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba("+rx+","+ gx+","+ bx+", 255));");
+						dialog.centralWidget.gradientY.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 0), stop:1 rgba("+ry+","+ gy+","+ by+", 255));");
+						
+						
 					
 						for (var i = 0; i < tracksData.length; i++) {
+						
+						
+							
 						
 							var ratings = getValuesFromTheeseTags(tagFiltersSelected, tracksData[i].getID());
 							
@@ -862,11 +886,15 @@ function MainWindow()
 							
 							if (tagFiltersSelected[0].name == ratings[0].name) {
 							
+								
+							
 								var X = mapValueToScreenCoordinate(ratings[0].value, 40, 'x');
 								
 								var Y = mapValueToScreenCoordinate(ratings[1].value, 40, 'y');
 							}
 							else{
+							
+								
 								
 								var X = mapValueToScreenCoordinate(ratings[1].value, 40, 'x');
 								
@@ -982,9 +1010,30 @@ function MainWindow()
 						quickSort(varianceArray,1);
 						
 						
+						
+						
 						var xAxisItem = varianceArray[varianceArray.length - 1]; //CHOOSE 2 TAGS WITH THE GREATEST 
 																				//VARIANCE AS COORDINATES TO PLOT TO SCREEN
 						var yAxisItem = varianceArray[varianceArray.length - 2];
+						
+						
+						var xAxisColor = new QColor(getColorFromTagID(xAxisItem.id).toString());
+						var yAxisColor = new QColor(getColorFromTagID(yAxisItem.id).toString());
+						
+						
+						
+						
+						
+						var rx = xAxisColor.red();
+						var gx = xAxisColor.green();
+						var bx = xAxisColor.blue();
+						
+						var ry = yAxisColor.red();
+						var gy = yAxisColor.green();
+						var by = yAxisColor.blue();
+						dialog.centralWidget.gradientX.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba("+rx+","+ gx+","+ bx+", 255));");
+						dialog.centralWidget.gradientY.setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 0), stop:1 rgba("+ry+","+ gy+","+ by+", 255));");
+						
 						
 						msg("tags choosen as wich have the most variance(most relevance)");
 						
