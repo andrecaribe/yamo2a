@@ -80,6 +80,17 @@ function getNameFromTagID(tagID){
 }
 
 
+function getColorFromTagID(tagID){
+
+
+  var query = "SELECT color from yamo_tags where id = "+tagID;
+
+  var res = sql(query);
+
+  return res;
+
+}
+
 
 function getTagsFromTrack(trackID){
 	
